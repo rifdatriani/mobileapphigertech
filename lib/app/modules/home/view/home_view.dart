@@ -34,13 +34,13 @@ class HomeView extends GetView<HomeController> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
-                height: 250,
+                height: 200,
                 child: const StationMapWidget(),
               ),
             ),
           ),
 
-          const SizedBox(height: 16), // Jarak antara peta dan grid
+          const SizedBox(height: 1), // Jarak antara peta dan grid
 
           // Station Overview Grid
           const StationOverviewGrid(),

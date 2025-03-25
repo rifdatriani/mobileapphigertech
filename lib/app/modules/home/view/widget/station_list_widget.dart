@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:mobileapphigertech/app/modules/home/controller/home_controller.dart';
+import 'package:mobileapphigertech/app/routes/app_route.dart';
 
 class StationListWidget extends StatefulWidget {
   const StationListWidget({super.key});
@@ -93,6 +94,7 @@ class _StationListWidgetState extends State<StationListWidget> {
                   const SizedBox(height: 12),
 
                   // List Informasi Balai
+                  // List Informasi Balai
                   Expanded(
                     child: PageView.builder(
                       itemCount: totalPages,
@@ -112,40 +114,45 @@ class _StationListWidgetState extends State<StationListWidget> {
                             final balaiName = entry.key;
                             final stations = entry.value;
 
-                            return Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.blueAccent, width: 2),
-                                color: Colors.white,
-                              ),
-                              margin: const EdgeInsets.only(bottom: 12),
-                              padding: const EdgeInsets.all(12),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Nama Balai
-                                  Text(
-                                    balaiName,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
+                            return InkWell(
+                              onTap: () {
+                                Get.toNamed(AppRoute.stations, arguments: balaiName);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.blueAccent, width: 2),
+                                  color: Colors.white,
+                                ),
+                                margin: const EdgeInsets.only(bottom: 12),
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Nama Balai
+                                    Text(
+                                      balaiName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 8),
+                                    const SizedBox(height: 8),
 
-                                  // Statistik Online, Offline, dan Total Stasiun
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      _buildInfoItem(Icons.wifi, ctrl.countStation.online ?? 0),
-                                      _buildInfoItem(Icons.wifi_off, ctrl.countStation.offline ?? 0),
-                                      _buildInfoItem(Icons.devices, stations.length),
-                                    ],
-                                  ),
-                                ],
+                                    // Statistik Online, Offline, dan Total Stasiun
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        _buildInfoItem(Icons.wifi, ctrl.countStation.online ?? 0),
+                                        _buildInfoItem(Icons.wifi_off, ctrl.countStation.offline ?? 0),
+                                        _buildInfoItem(Icons.devices, stations.length),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           }).toList(),

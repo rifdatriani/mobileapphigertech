@@ -8,29 +8,27 @@ class LogoutView extends GetView<LogoutController> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.white, // Pastikan background tetap putih
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), // UI lebih smooth
       title: const Text(
         "Logout",
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold), // Warna teks hitam
+        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
       content: const Text(
         "Apakah Anda yakin ingin keluar?",
-        style: TextStyle(color: Colors.black), // Warna teks hitam
+        style: TextStyle(color: Colors.black),
       ),
       actions: [
         TextButton(
-          onPressed: () => Get.back(), // Tutup dialog
-          child: const Text(
-            "Batal",
-            style: TextStyle(color: Colors.blue), // Warna teks lebih terlihat
-          ),
+          onPressed: () => Get.back(),
+          child: const Text("Batal", style: TextStyle(color: Colors.blue)),
         ),
         TextButton(
-          onPressed: () => controller.logout(),
-          child: const Text(
-            "Keluar",
-            style: TextStyle(color: Colors.red), // Warna teks merah untuk logout
-          ),
+          onPressed: () {
+            controller.logout();
+            Get.back(); // Tutup dialog sebelum logout
+          },
+          child: const Text("Keluar", style: TextStyle(color: Colors.red)),
         ),
       ],
     );

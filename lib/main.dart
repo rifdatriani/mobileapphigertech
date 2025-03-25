@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
             textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
           ),
-          initialRoute: AppRoute.home,
+          initialRoute: AppRoute.splash,
           getPages: AppPage.pages,
         );
       },

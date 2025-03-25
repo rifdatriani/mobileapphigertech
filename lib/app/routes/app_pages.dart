@@ -12,20 +12,20 @@ import 'package:mobileapphigertech/app/routes/app_route.dart';
 class AppPage {
   static final pages = [
     // Splash Screen
-    // GetPage(
-    //   name: AppRoute.splash,
-    //   page: () => SplashView(),
-    //   binding: SplashBinding(),
-    //   transition: Transition.fadeIn,
-    // ),
+    GetPage(
+      name: AppRoute.splash,
+      page: () => SplashView(),
+      binding: SplashBinding(),
+      transition: Transition.fadeIn,
+    ),
 
-    // // Login Screen
-    // GetPage(
-    //   name: AppRoute.login,
-    //   page: () => LoginView(),
-    //   binding: LoginBinding(),
-    //   transition: Transition.fadeIn,
-    // ),
+    // Login Screen
+    GetPage(
+      name: AppRoute.login,
+      page: () => LoginView(),
+      binding: LoginBinding(),
+      transition: Transition.fadeIn,
+    ),
 
     // Home Screen
     GetPage(

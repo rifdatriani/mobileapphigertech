@@ -8,32 +8,42 @@ class StationController extends GetxController with StateMixin<dynamic> {
   List<StationModel> filteredStations = [];
   String searchQuery = '';
 
+  get searchStations => null;
+
   @override
   void onInit() {
     super.onInit();
-    fetchStations();
+    
+    // Ambil argument (nama balai) jika ada
+    final balaiName = Get.arguments;
+    
+    fetchStations(balaiName);
   }
 
-  void fetchStations() async {
+  void fetchStations(String? balaiName) async {
     change(null, status: RxStatus.loading());
 
     try {
       final data = await _repository.fetchStationList();
 
-      filteredStations.clear();
-      filteredStations.addAll(data);
+      stations.clear();
+      stations.addAll(data);
 
-      change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+      // Filter berdasarkan balai jika ada
+      if (balaiName != null) {
+        filteredStations = stations
+            .where((s) => s.balaiName != null && s.balaiName == balaiName)
+            .toList();
+      } else {
+        filteredStations = List.from(stations);
+      }
+
+      change(null, status: filteredStations.isEmpty ? RxStatus.empty() : RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
-    update(); // untuk GetBuilder
-  }
 
-  void searchStations(String query) {
-    searchQuery = query.toLowerCase();
-    filteredStations =
-        stations.where((s) => s.name.toLowerCase().contains(searchQuery) || s.stationType.toLowerCase().contains(searchQuery)).toList();
     update();
   }
+
 }
