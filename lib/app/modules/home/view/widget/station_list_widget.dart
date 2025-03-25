@@ -59,7 +59,7 @@ class _StationListWidgetState extends State<StationListWidget> {
                   // Header
                   Center(
                     child: Text(
-                      'Informasi Instalasi',
+                      'Informasi Instansi',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
