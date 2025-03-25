@@ -12,7 +12,7 @@ class SplashView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/higertech.png', width: 200),
+            Image.asset('assets/hgt.png', width: 200),
             SizedBox(height: 20),
             CircularProgressIndicator(),
           ],
