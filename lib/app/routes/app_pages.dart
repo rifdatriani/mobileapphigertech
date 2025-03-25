@@ -19,13 +19,13 @@ class AppPage {
     //   transition: Transition.fadeIn,
     // ),
 
-    // // Login Screen
-    // GetPage(
-    //   name: AppRoute.login,
-    //   page: () => LoginView(),
-    //   binding: LoginBinding(),
-    //   transition: Transition.fadeIn,
-    // ),
+    // Login Screen
+    GetPage(
+      name: AppRoute.login,
+      page: () => LoginView(),
+      binding: LoginBinding(),
+      transition: Transition.fadeIn,
+    ),
 
     // Home Screen
     GetPage(

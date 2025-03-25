@@ -13,6 +13,13 @@ class LoginView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset('assets/hgt.png', width: 100),
+                const SizedBox(height: 10),
+                const Text(
+                  "Silahkan login untuk mengakses aplikasi",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 15),
             TextField(
               controller: controller.usernameController,
               style: TextStyle(color: Colors.black), // Warna teks menjadi hitam
@@ -44,7 +51,17 @@ class LoginView extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: controller.login,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  minimumSize: Size(double.infinity, 50),
+                  ),
               child: Text("Login"),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Powered By\nPT. Higertech Karya Sinergi",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey),
             ),
           ],
         ),
