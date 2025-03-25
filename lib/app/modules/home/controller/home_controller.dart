@@ -7,7 +7,9 @@ class HomeController extends GetxController with StateMixin<dynamic> {
   final HomeRepository _repository = HomeRepository();
   final List<StationModel> stations = [];
   final CountStationModel countStation = CountStationModel();
-
+  final RxList<StationModel> filteredStations = <StationModel>[].obs; // Tambahkan ini
+  final RxString searchQuery = ''.obs; // Query pencarian
+ 
   @override
   void onInit() {
     super.onInit();
@@ -22,6 +24,7 @@ class HomeController extends GetxController with StateMixin<dynamic> {
 
       stations.clear();
       stations.addAll(data);
+      filteredStations.assignAll(data); // Inisialisasi dengan semua data
 
       countStation.totalStation = data.length;
       countStation.totalOrganization = data.map((s) => s.organizationCode).toSet().length;
@@ -41,5 +44,17 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     }
 
     update(); // untuk GetBuilder
+  }
+
+  // Fungsi pencarian balai
+  void searchBalai(String query) {
+    searchQuery.value = query;
+    if (query.isEmpty) {
+      filteredStations.assignAll(stations);
+    } else {
+      filteredStations.assignAll(stations.where((station) =>
+          station.balaiName != null &&
+          station.balaiName!.toLowerCase().contains(query.toLowerCase())));
+    }
   }
 }

@@ -10,6 +10,7 @@ class CountStationModel {
   int totalFM;
   int totalAVWR;
   int totalWQ;
+  int balaiName;
   int totalOrganization;
 
   CountStationModel({
@@ -24,6 +25,7 @@ class CountStationModel {
     this.totalFM = 0,
     this.totalAVWR = 0,
     this.totalWQ = 0,
+    this.balaiName = 0,
     this.totalOrganization = 0,
   });
 
@@ -42,6 +44,7 @@ class CountStationModel {
       totalFM: json['totalFM'] ?? 0,
       totalAVWR: json['totalAVWR'] ?? 0,
       totalWQ: json['totalWQ'] ?? 0,
+      balaiName: json['balaiName'] ?? 0,
       totalOrganization: json['totalOrganization'] ?? 0,
     );
   }
@@ -59,6 +62,7 @@ class CountStationModel {
       'totalFM': totalFM,
       'totalAVWR': totalAVWR,
       'totalWQ': totalWQ,
+      'balaiName' : balaiName,
       'totalOrganization': totalOrganization,
     };
   }
