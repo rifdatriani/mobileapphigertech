@@ -4,6 +4,7 @@ import 'package:mobileapphigertech/app/modules/home/controller/home_controller.d
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_grid_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_list_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
+import 'package:mobileapphigertech/app/modules/screens/logout/controller/logout_controller.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -15,13 +16,16 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Image.asset('assets/higertech.png', height: 40),
+        title: Image.asset('assets/higertech.png', height: 50),
         centerTitle: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.redAccent),
             onPressed: () {
-              Get.to(() => const LogoutView()); // Arahkan ke halaman Logout
+              if (!Get.isRegistered<LogoutController>()) {
+                Get.put(LogoutController()); // Pastikan Controller sudah ada
+              }
+              Get.dialog(const LogoutView());
             },
           ),
         ],

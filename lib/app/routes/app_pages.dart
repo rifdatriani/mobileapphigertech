@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:mobileapphigertech/app/modules/screens/logout/binding/logout_binding.dart';
+import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
 import 'package:mobileapphigertech/app/modules/screens/splashscreen/binding/splash_binding.dart';
 import 'package:mobileapphigertech/app/modules/screens/splashscreen/view/splash_view.dart';
 import 'package:mobileapphigertech/app/modules/screens/login/binding/login_binding.dart';
@@ -41,6 +43,12 @@ class AppPage {
       page: () => StationView(),
       binding: StationBinding(),
       transition: Transition.rightToLeft,
+    ),
+
+    GetPage(
+      name: '/logout',
+      page: () => const LogoutView(),
+      binding: LogoutBinding(), // Pastikan binding sudah ditambahkan
     ),
   ];
 }
