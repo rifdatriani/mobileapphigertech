@@ -8,8 +8,15 @@ class StationView extends GetView<StationController> {
 
   @override
   Widget build(BuildContext context) {
+    // Ambil argument dengan aman
+    final String balai = Get.arguments?.toString() ?? 'Station';
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Station'), backgroundColor: Colors.blueAccent, foregroundColor: Colors.white),
+      appBar: AppBar(
+        title: Text(balai),
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
+      ),
       body: GetBuilder<StationController>(
         builder: (controller) {
           if (controller.status.isLoading) {
