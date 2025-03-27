@@ -12,9 +12,10 @@ class StationView extends GetView<StationController> {
   @override
   Widget build(BuildContext context) {
     // Ambil argument dengan aman
-    final String balai = Get.arguments is Map<String, dynamic>
-        ? Get.arguments['balai'] ?? 'Station'
-        : Get.arguments?.toString() ?? 'Station';
+    final String balai =
+        Get.arguments is Map<String, dynamic>
+            ? Get.arguments['balai'] ?? 'Station'
+            : Get.arguments?.toString() ?? 'Station';
 
     return Scaffold(
       appBar: AppBar(
@@ -39,37 +40,30 @@ class StationView extends GetView<StationController> {
           // Nama Balai
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            child: Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              child: Padding(
-                padding: EdgeInsets.all(12.w),
-                child: Center(
-                  child: Text(
-                    balai,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                    textAlign: TextAlign.center,
+            child: Padding(
+              padding: EdgeInsets.all(1.w),
+              child: Center(
+                child: Text(
+                  balai,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
           ),
 
           const SizedBox(height: 1),
-          
+
           // Map Section
           Padding(
             padding: const EdgeInsets.all(16),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: SizedBox(
-                height: 200,
-                child: const StationMapWidget(),
-              ),
+              child: SizedBox(height: 200, child: const StationMapWidget()),
             ),
           ),
 
@@ -84,7 +78,9 @@ class StationView extends GetView<StationController> {
                 }
 
                 if (controller.status.isError) {
-                  return Center(child: Text('Error: ${controller.status.errorMessage}'));
+                  return Center(
+                    child: Text('Error: ${controller.status.errorMessage}'),
+                  );
                 }
 
                 if (controller.filteredStations.isEmpty) {
@@ -105,25 +101,75 @@ class StationView extends GetView<StationController> {
                       //   ),
                       //   onChanged: controller.searchStations,
                       // ),
-                      const SizedBox(height: 12),
-                      Expanded(
-                        child: ListView.separated(
-                          itemCount: controller.filteredStations.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 8),
-                          itemBuilder: (context, index) {
-                            final station = controller.filteredStations[index];
-                            return ListTile(
-                              contentPadding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.h),
-                              title: Text(station.name, style: const TextStyle(color: Colors.black87)),
-                              subtitle: Text(station.stationType, style: const TextStyle(color: Colors.black54)),
-                              trailing: const Icon(Icons.chevron_right),
-                              tileColor: Colors.grey.shade100,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              onTap: () {
-                                print('Tapped ${station.name}');
-                              },
-                            );
-                          },
+                      const SizedBox(height: 1),
+
+                      // Container utama
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color:
+                              Colors
+                                  .grey[300], // Warna latar belakang container
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          children: [
+                            // Navigasi dengan 3 Kotak
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: List.generate(3, (index) {
+                                return Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white, // Kotak warna putih
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                            const SizedBox(height: 8),
+
+                            // ListView Scrollable
+                            SizedBox(
+                              height: 320, // Tinggi maksimum untuk scroll
+                              child: ListView.builder(
+                                itemCount: controller.filteredStations.length,
+                                itemBuilder: (context, index) {
+                                  final station =
+                                      controller.filteredStations[index];
+                                  return ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                      vertical: 0.h,
+                                      horizontal: 12.h,
+                                    ),
+                                    
+                                    title: Text(
+                                      station.name,
+                                      style: const TextStyle(
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      station.stationType,
+                                      style: const TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                    tileColor: Colors.grey.shade100,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -137,3 +183,21 @@ class StationView extends GetView<StationController> {
     );
   }
 }
+
+                      // Expanded(
+                      //   child: ListView.separated(
+                      //     itemCount: controller.filteredStations.length,
+                      //     separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      //     itemBuilder: (context, index) {
+                      //       final station = controller.filteredStations[index];
+                      //       return ListTile(
+                      //         contentPadding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.h),
+                      //         title: Text(station.name, style: const TextStyle(color: Colors.black87)),
+                      //         subtitle: Text(station.stationType, style: const TextStyle(color: Colors.black54)),
+                      //         trailing: const Icon(Icons.chevron_right),
+                      //         tileColor: Colors.grey.shade100,
+                      //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
