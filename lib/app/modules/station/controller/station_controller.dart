@@ -7,6 +7,7 @@ class StationController extends GetxController with StateMixin<dynamic> {
   final List<StationModel> stations = [];
   List<StationModel> filteredStations = [];
   String searchQuery = '';
+  var selectedIndex = 0.obs;
 
   get searchStations => null;
 
