@@ -11,8 +11,8 @@ class StationMapWidget extends StatelessWidget {
       height: 150,
       child: FlutterMap(
         options: MapOptions(
-          center: LatLng(-6.9175, 107.6191),
-          zoom: 10,
+          center: LatLng(-2.5489, 118.0149),
+          zoom: 4,
         ),
         children: [
           TileLayer(
