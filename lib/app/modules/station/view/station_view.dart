@@ -105,12 +105,13 @@ class StationView extends GetView<StationController> {
 
                       // Container utama
                       Container(
-                        width: double.infinity,
+                              height: 326, // Tinggi maksimum untuk scroll
+                        width: 350,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color:
                               Colors
-                                  .grey[300], // Warna latar belakang container
+                                  .grey[500], // Warna latar belakang container
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
@@ -133,12 +134,12 @@ class StationView extends GetView<StationController> {
                                 );
                               }),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 2),
 
                             // ListView Scrollable
-                            SizedBox(
-                              height: 320, // Tinggi maksimum untuk scroll
+                            Expanded(
                               child: ListView.builder(
+                                
                                 itemCount: controller.filteredStations.length,
                                 itemBuilder: (context, index) {
                                   final station =
@@ -148,7 +149,10 @@ class StationView extends GetView<StationController> {
                                       vertical: 0.h,
                                       horizontal: 12.h,
                                     ),
-                                    
+                                    // tileColor: const Color.fromARGB(255, 109, 101, 101),  
+                                    // shape: RoundedRectangleBorder(
+                                    // borderRadius: BorderRadius.circular(12),
+                                    // ),
                                     title: Text(
                                       station.name,
                                       style: const TextStyle(
@@ -160,10 +164,6 @@ class StationView extends GetView<StationController> {
                                       style: const TextStyle(
                                         color: Colors.black54,
                                       ),
-                                    ),
-                                    tileColor: Colors.grey.shade100,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                   );
                                 },
