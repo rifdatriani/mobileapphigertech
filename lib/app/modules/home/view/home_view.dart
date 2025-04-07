@@ -12,50 +12,142 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    // Mendapatkan ukuran screen
+    final size = MediaQuery.of(context).size;
+    final isTablet = size.width > 600;
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Image.asset('assets/higertech.png', height: 50),
+        toolbarHeight: size.height * 0.07, // Ukuran AppBar responsif
+        title: Image.asset(
+          'assets/higertech.png', 
+          height: size.height * 0.04, // Logo responsif
+          fit: BoxFit.contain,
+        ),
         centerTitle: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.redAccent),
             onPressed: () {
               if (!Get.isRegistered<LogoutController>()) {
-                Get.put(LogoutController()); // Pastikan Controller sudah ada
+                Get.put(LogoutController());
               }
               Get.dialog(const LogoutView());
             },
           ),
         ],
       ),
-      body: Column(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          // Refresh data - bisa disambungkan ke controller
+          return await Future.delayed(const Duration(seconds: 1));
+        },
+        child: SafeArea(
+          child: isTablet 
+              ? _buildTabletLayout(context, size)
+              : _buildMobileLayout(context, size),
+        ),
+      ),
+    );
+  }
+
+  // Layout untuk tablet (layar lebar)
+  Widget _buildTabletLayout(BuildContext context, Size size) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: size.height * 0.01,
+        horizontal: size.width * 0.02,
+      ),
+      child: Column(
         children: [
-          // Map Section
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: SizedBox(
-                height: 200,
-                child: const StationMapWidget(),
-              ),
+          // Baris atas dengan Map dan Grid
+          SizedBox(
+            height: size.height * 0.35,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Map Section
+                Expanded(
+                  flex: 3,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: const StationMapWidget(),
+                  ),
+                ),
+                SizedBox(width: size.width * 0.02),
+                // Station Overview Grid
+                const Expanded(
+                  flex: 2,
+                  child: StationOverviewGrid(),
+                ),
+              ],
             ),
           ),
-
-          const SizedBox(height: 1), // Jarak antara peta dan grid
-
-          // Station Overview Grid
-          const StationOverviewGrid(),
-          const SizedBox(height: 16), // Jarak antara grid dan list
-
-          // Expanded untuk daftar stasiun agar bisa tampil penuh
+          
+          SizedBox(height: size.height * 0.02),
+          
+          // List stasiun
           Expanded(
             child: StationListWidget(),
           ),
         ],
       ),
+    );
+  }
+
+  // Layout untuk mobile (layar kecil)
+  Widget _buildMobileLayout(BuildContext context, Size size) {
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: size.height - AppBar().preferredSize.height - MediaQuery.of(context).padding.top,
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: size.height * 0.01,
+            horizontal: size.width * 0.03,
+          ),
+          child: Column(
+            children: [
+              // Map Section
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SizedBox(
+                  height: size.height * 0.25, // Responsif berdasarkan tinggi layar
+                  width: double.infinity,
+                  child: const StationMapWidget(),
+                ),
+              ),
+
+              SizedBox(height: size.height * 0.015),
+
+              // Station Overview Grid
+              const StationOverviewGrid(),
+              
+              SizedBox(height: size.height * 0.015),
+
+              // List stasiun dengan tinggi tetap
+              SizedBox(
+                height: size.height * 0.5, // Tinggi tetap untuk list
+                child: StationListWidget(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Widget wrapper untuk StationOverviewGrid jika perlu disesuaikan untuk responsivitas
+extension StationOverviewGridExt on StationOverviewGrid {
+  Widget withResponsiveHeight(double height) {
+    return SizedBox(
+      height: height,
+      child: this,
     );
   }
 }

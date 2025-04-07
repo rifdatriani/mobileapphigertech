@@ -10,8 +10,8 @@ class LogoutView extends StatelessWidget {
     final LogoutController controller = Get.find<LogoutController>();
 
     return AlertDialog(
-      title: const Text("Logout"),
-      content: const Text("Apakah Anda yakin ingin keluar?"),
+      title: const Text("Logout", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+      content: const Text("Apakah Anda yakin ingin keluar?", style: TextStyle(color: Colors.black)),
       actions: [
         TextButton(
           onPressed: () => Get.back(),
