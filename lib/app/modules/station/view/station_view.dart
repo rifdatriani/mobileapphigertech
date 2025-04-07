@@ -5,6 +5,7 @@ import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widg
 import 'package:mobileapphigertech/app/modules/screens/logout/controller/logout_controller.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
 import 'package:mobileapphigertech/app/modules/station/controller/station_controller.dart';
+import 'package:mobileapphigertech/app/modules/station/view/map/map_station.dart';
 
 class StationView extends GetView<StationController> {
   const StationView({super.key});
@@ -22,7 +23,7 @@ class StationView extends GetView<StationController> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Image.asset('assets/higertech.png', height: 50),
-        centerTitle: false,
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.redAccent),
@@ -63,7 +64,7 @@ class StationView extends GetView<StationController> {
             padding: const EdgeInsets.all(16),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: SizedBox(height: 200, child: const StationMapWidget()),
+              child: SizedBox(height: 200, child: const StationMap()),
             ),
           ),
 
@@ -87,93 +88,61 @@ class StationView extends GetView<StationController> {
                   return const Center(child: Text('No stations found.'));
                 }
 
+    List<String> tabs = ['Pos Duga Air', 'Pos Curah Hujan', 'Pos Klimatlogi'];
                 return Padding(
                   padding: EdgeInsets.all(12.w),
-                  child: Column(
-                    children: [
-                      // TextField(
-                      //   decoration: InputDecoration(
-                      //     hintText: 'Cari Balai...',
-                      //     prefixIcon: const Icon(Icons.search),
-                      //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                      //     filled: true,
-                      //     fillColor: Colors.grey.shade100,
-                      //   ),
-                      //   onChanged: controller.searchStations,
-                      // ),
-                      const SizedBox(height: 1),
 
-                      // Container utama
-                      Container(
-                              height: 326, // Tinggi maksimum untuk scroll
-                        width: 350,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color:
-                              Colors
-                                  .grey[500], // Warna latar belakang container
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          children: [
-                            // Navigasi dengan 3 Kotak
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: List.generate(3, (index) {
-                                return Expanded(
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                    ),
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white, // Kotak warna putih
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ),
-                            const SizedBox(height: 2),
+child: Column(
+  children: [
+    // Tambah bagian navigasi tab di sini
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(tabs.length, (index) {
+        final isSelected = controller.selectedIndex == index;
+        return Expanded(
+          child: GestureDetector(
+            onTap: () => controller.changeTab(index),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.blue : Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Text(
+                tabs[index],
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        );
+      }),
+    ),
+    
+    const SizedBox(height: 2),
 
-                            // ListView Scrollable
-                            Expanded(
-                              child: ListView.builder(
-                                
-                                itemCount: controller.filteredStations.length,
-                                itemBuilder: (context, index) {
-                                  final station =
-                                      controller.filteredStations[index];
-                                  return ListTile(
-                                    contentPadding: EdgeInsets.symmetric(
-                                      vertical: 0.h,
-                                      horizontal: 12.h,
-                                    ),
-                                    // tileColor: const Color.fromARGB(255, 109, 101, 101),  
-                                    // shape: RoundedRectangleBorder(
-                                    // borderRadius: BorderRadius.circular(12),
-                                    // ),
-                                    title: Text(
-                                      station.name,
-                                      style: const TextStyle(
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      station.stationType,
-                                      style: const TextStyle(
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+    // Scrollable List
+    Expanded(
+      child: ListView.builder(
+        itemCount: controller.filteredStations.length,
+        itemBuilder: (context, index) {
+          final station = controller.filteredStations[index];
+          return ListTile(
+            contentPadding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.h),
+            title: Text(station.name, style: const TextStyle(color: Colors.black87)),
+            subtitle: Text(station.stationType, style: const TextStyle(color: Colors.black54)),
+          );
+        },
+      ),
+    ),
+  ],
+),
+
                 );
               },
             ),
