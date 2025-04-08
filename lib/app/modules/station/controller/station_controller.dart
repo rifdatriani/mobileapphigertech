@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_notifier.dart';
 import 'package:mobileapphigertech/app/modules/station/model/station_model.dart';
 import 'package:mobileapphigertech/app/modules/station/repository/station_repository.dart';
 
@@ -7,21 +9,19 @@ class StationController extends GetxController with StateMixin<dynamic> {
   final List<StationModel> stations = [];
   List<StationModel> filteredStations = [];
   String searchQuery = '';
-  var selectedIndex = 0.obs;
-
-  get searchStations => null;
+  int selectedIndex = 0;
+  String? balaiName;
 
   @override
   void onInit() {
     super.onInit();
-    
-    // Ambil argument (nama balai) jika ada
-    final balaiName = Get.arguments;
-    
-    fetchStations(balaiName);
+
+    final args = Get.arguments as Map<String, dynamic>?;
+    balaiName = args?['balaiName'];
+    fetchStations();
   }
 
-  void fetchStations(String? balaiName) async {
+  void fetchStations() async {
     change(null, status: RxStatus.loading());
 
     try {
@@ -30,14 +30,7 @@ class StationController extends GetxController with StateMixin<dynamic> {
       stations.clear();
       stations.addAll(data);
 
-      // Filter berdasarkan balai jika ada
-      if (balaiName != null) {
-        filteredStations = stations
-            .where((s) => s.balaiName != null && s.balaiName == balaiName)
-            .toList();
-      } else {
-        filteredStations = List.from(stations);
-      }
+      applyFilter();
 
       change(null, status: filteredStations.isEmpty ? RxStatus.empty() : RxStatus.success());
     } catch (e) {
@@ -47,4 +40,32 @@ class StationController extends GetxController with StateMixin<dynamic> {
     update();
   }
 
+  void changeTab(int index) {
+    selectedIndex = index;
+    applyFilter();
+    update();
+  }
+
+  void searchStations(String query) {
+    searchQuery = query.toLowerCase();
+    applyFilter();
+    update();
+  }
+
+  void applyFilter() {
+    List<StationModel> tempList = balaiName != null
+        ? stations.where((s) => s.balaiName == balaiName).toList()
+        : List.from(stations);
+
+    final stationTypes = {
+      0: ['AWLR', 'PDA'],
+      1: ['ARR', 'PCH'],
+      2: ['AWS'],
+    };
+
+    final allowedTypes = stationTypes[selectedIndex] ?? [];
+    tempList = tempList.where((s) => allowedTypes.contains(s.stationType)).toList();
+
+    filteredStations = tempList;
+  }
 }
