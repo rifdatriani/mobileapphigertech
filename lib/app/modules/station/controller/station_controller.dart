@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_notifier.dart';
 import 'package:mobileapphigertech/app/modules/station/model/station_model.dart';
 import 'package:mobileapphigertech/app/modules/station/repository/station_repository.dart';
 
@@ -8,15 +10,14 @@ class StationController extends GetxController with StateMixin<dynamic> {
   List<StationModel> filteredStations = [];
   String searchQuery = '';
   int selectedIndex = 0;
-
-  String? balaiName; // 👈 Simpan nama balai di sini
+  String? balaiName;
 
   @override
   void onInit() {
     super.onInit();
 
-    // Simpan argument (nama balai)
-    balaiName = Get.arguments;
+    final args = Get.arguments as Map<String, dynamic>?;
+    balaiName = args?['balaiName'];
     fetchStations();
   }
 
@@ -29,7 +30,7 @@ class StationController extends GetxController with StateMixin<dynamic> {
       stations.clear();
       stations.addAll(data);
 
-      applyFilter(); // 👈 Langsung terapkan filter sesuai selectedIndex + balaiName
+      applyFilter();
 
       change(null, status: filteredStations.isEmpty ? RxStatus.empty() : RxStatus.success());
     } catch (e) {
@@ -41,42 +42,30 @@ class StationController extends GetxController with StateMixin<dynamic> {
 
   void changeTab(int index) {
     selectedIndex = index;
-    applyFilter(); // ⏎ Terapkan filter baru
+    applyFilter();
     update();
   }
 
   void searchStations(String query) {
     searchQuery = query.toLowerCase();
-    applyFilter(); // ⏎ Terapkan filter baru
+    applyFilter();
     update();
   }
 
   void applyFilter() {
-    List<StationModel> tempList = [];
+    List<StationModel> tempList = balaiName != null
+        ? stations.where((s) => s.balaiName == balaiName).toList()
+        : List.from(stations);
 
-    // Step 1: Filter berdasarkan balai
-    if (balaiName != null) {
-      tempList = stations.where((s) => s.balaiName == balaiName).toList();
-    } else {
-      tempList = List.from(stations);
-    }
+    final stationTypes = {
+      0: ['AWLR', 'PDA'],
+      1: ['ARR', 'PCH'],
+      2: ['AWS'],
+    };
 
-    // Step 2: Filter berdasarkan tab (stationType)
-    switch (selectedIndex) {
-      case 0:
-        tempList = tempList.where((s) => s.stationType == 'AWLR'||s.stationType == 'PDA').toList();
-        break;
-      case 1:
-        tempList = tempList.where((s) => s.stationType == 'ARR'||s.stationType == 'PCH').toList();
-        break;
-      case 2:
-        tempList = tempList.where((s) => s.stationType == 'AWS').toList();
-        // SEMUA (tidak difilter)
-        break;
-        
-    }
+    final allowedTypes = stationTypes[selectedIndex] ?? [];
+    tempList = tempList.where((s) => allowedTypes.contains(s.stationType)).toList();
 
     filteredStations = tempList;
   }
-  
 }

@@ -116,7 +116,13 @@ class _StationListWidgetState extends State<StationListWidget> {
 
                             return InkWell(
                               onTap: () {
-                                Get.toNamed(AppRoute.stations, arguments: balaiName);
+                               // Ambil lokasi pertama dari daftar stasiun pada balai yang dipilih
+                                final firstStation = stations.first;
+                                Get.toNamed(AppRoute.stations, arguments: {
+                                  'lat': firstStation.latitude,
+                                  'lng': firstStation.longitude,  
+                                  'balaiName': balaiName,
+                                });
                               },
                               child: Container(
                                 decoration: BoxDecoration(

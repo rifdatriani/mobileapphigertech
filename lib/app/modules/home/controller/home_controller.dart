@@ -7,9 +7,10 @@ class HomeController extends GetxController with StateMixin<dynamic> {
   final HomeRepository _repository = HomeRepository();
   final List<StationModel> stations = [];
   final CountStationModel countStation = CountStationModel();
-  final RxList<StationModel> filteredStations = <StationModel>[].obs; // Tambahkan ini
+  final RxList<StationModel> filteredStations =
+      <StationModel>[].obs; // Tambahkan ini
   final RxString searchQuery = ''.obs; // Query pencarian
- 
+
   @override
   void onInit() {
     super.onInit();
@@ -27,7 +28,8 @@ class HomeController extends GetxController with StateMixin<dynamic> {
       filteredStations.assignAll(data); // Inisialisasi dengan semua data
 
       countStation.totalStation = data.length;
-      countStation.totalOrganization = data.map((s) => s.organizationCode).toSet().length;
+      countStation.totalOrganization =
+          data.map((s) => s.organizationCode).toSet().length;
 
       // Hitung total online & offline berdasarkan status station
       countStation.online = data.where((s) => s.status == 'online').length;
@@ -38,7 +40,10 @@ class HomeController extends GetxController with StateMixin<dynamic> {
       countStation.totalArr = data.where((s) => s.type == 'ARR').length;
       countStation.totalAws = data.where((s) => s.type == 'AWS').length;
 
-      change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+      change(
+        null,
+        status: data.isEmpty ? RxStatus.empty() : RxStatus.success(),
+      );
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
@@ -52,9 +57,13 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     if (query.isEmpty) {
       filteredStations.assignAll(stations);
     } else {
-      filteredStations.assignAll(stations.where((station) =>
-          station.balaiName != null &&
-          station.balaiName!.toLowerCase().contains(query.toLowerCase())));
+      filteredStations.assignAll(
+        stations.where(
+          (station) =>
+              station.balaiName != null &&
+              station.balaiName!.toLowerCase().contains(query.toLowerCase()),
+        ),
+      );
     }
   }
 }
