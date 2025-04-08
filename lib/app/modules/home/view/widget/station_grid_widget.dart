@@ -8,6 +8,9 @@ class StationOverviewGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isTablet = size.width > 600;
+    
     return GetBuilder<HomeController>(
       builder: (ctrl) {
         if (ctrl.status.isLoading) {
@@ -33,53 +36,93 @@ class StationOverviewGrid extends StatelessWidget {
           {"title": "Klimatologi", "value": data.totalAws, "color": Colors.brown},
         ];
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            alignment: WrapAlignment.center,
-            children: List.generate(items.length, (index) {
-              double width = (index < 4)
-                  ? (MediaQuery.of(context).size.width - 64) / 4
-                  : (MediaQuery.of(context).size.width - 48) / 3;
-
-              return Container(
-                width: width,
-                height: 80,
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: items[index]["color"],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      items[index]["title"],
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+        // Calculate optimal grid layout based on screen size
+        int crossAxisCount = isTablet ? 4 : 3;
+        
+        // Top row items (always show first 3 or 4 items in a row)
+        int topRowCount = isTablet ? 3 : 4;
+        
+        return Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              // Top row - always show 3 or 4 items
+              Padding(
+                padding: EdgeInsets.all(size.width * 0.02),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(
+                    topRowCount,
+                    (index) => Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(size.width * 0.005),
+                        child: _buildGridItem(items[index], context),
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "${items[index]["value"]}",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              );
-            }),
+              ),
+              
+              // Remaining items
+              if (items.length > topRowCount)
+                Padding(
+                  padding: EdgeInsets.all(size.width * 0.02),
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: 1.2,
+                    mainAxisSpacing: size.width * 0.01,
+                    crossAxisSpacing: size.width * 0.01,
+                    children: List.generate(
+                      items.length - topRowCount,
+                      (index) => _buildGridItem(items[index + topRowCount], context),
+                    ),
+                  ),
+                ),
+            ],
           ),
         );
       },
+    );
+  }
+  
+  Widget _buildGridItem(Map<String, dynamic> item, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: item["color"],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              item["title"],
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            "${item["value"]}",
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
