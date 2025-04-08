@@ -11,6 +11,9 @@ class StationController extends GetxController with StateMixin<dynamic> {
   String searchQuery = '';
   int selectedIndex = 0;
   String? balaiName;
+  List<String> organizationCodes = [];
+String selectedOrganizationCode = '';
+
 
   @override
   void onInit() {
@@ -29,6 +32,15 @@ class StationController extends GetxController with StateMixin<dynamic> {
 
       stations.clear();
       stations.addAll(data);
+      // Ambil list organizationCode unik dari data
+organizationCodes = stations
+    .map((s) => s.organizationCode?.toString() ?? '')
+    .toSet()
+    .where((e) => e.isNotEmpty)
+    .toList();
+
+selectedOrganizationCode = organizationCodes.isNotEmpty ? organizationCodes.first : '';
+
 
       applyFilter();
 
