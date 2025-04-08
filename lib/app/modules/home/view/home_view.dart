@@ -64,21 +64,6 @@ class HomeView extends StatelessWidget {
       ),
       child: Column(
         children: [
-<<<<<<< HEAD
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: SizedBox(
-                height: 200,
-                child: const StationMapWidget(),
-              ),
-            ),
-          ),
-          const SizedBox(height: 1),
-          const StationOverviewGrid(),
-          const SizedBox(height: 16),
-=======
           // Baris atas dengan Map dan Grid
           SizedBox(
             height: size.height * 0.35,
@@ -106,7 +91,6 @@ class HomeView extends StatelessWidget {
           SizedBox(height: size.height * 0.02),
           
           // List stasiun
->>>>>>> ce6154497ac03157365df9e81e249b8d341e8324
           Expanded(
             child: StationListWidget(showSearch: false),
           ),
@@ -150,7 +134,7 @@ class HomeView extends StatelessWidget {
               // List stasiun dengan tinggi tetap
               SizedBox(
                 height: size.height * 0.5, // Tinggi tetap untuk list
-                child: StationListWidget(),
+                child: StationListWidget(showSearch: false),
               ),
             ],
           ),
