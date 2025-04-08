@@ -7,8 +7,10 @@ import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widg
 import 'package:mobileapphigertech/app/modules/screens/logout/controller/logout_controller.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
 
-class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+class HomeView extends StatelessWidget {
+  HomeView({super.key});
+
+  final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class HomeView extends GetView<HomeController> {
             icon: const Icon(Icons.logout, color: Colors.redAccent),
             onPressed: () {
               if (!Get.isRegistered<LogoutController>()) {
-                Get.put(LogoutController()); // Pastikan Controller sudah ada
+                Get.put(LogoutController());
               }
               Get.dialog(const LogoutView());
             },
@@ -32,7 +34,6 @@ class HomeView extends GetView<HomeController> {
       ),
       body: Column(
         children: [
-          // Map Section
           Padding(
             padding: const EdgeInsets.all(16),
             child: ClipRRect(
@@ -43,16 +44,11 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
           ),
-
-          const SizedBox(height: 1), // Jarak antara peta dan grid
-
-          // Station Overview Grid
+          const SizedBox(height: 1),
           const StationOverviewGrid(),
-          const SizedBox(height: 16), // Jarak antara grid dan list
-
-          // Expanded untuk daftar stasiun agar bisa tampil penuh
+          const SizedBox(height: 16),
           Expanded(
-            child: StationListWidget(),
+            child: StationListWidget(showSearch: false),
           ),
         ],
       ),

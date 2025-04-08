@@ -5,15 +5,15 @@ import 'package:mobileapphigertech/app/modules/home/controller/home_controller.d
 import 'package:mobileapphigertech/app/routes/app_route.dart';
 
 class StationListWidget extends StatefulWidget {
-  const StationListWidget({super.key});
+  final bool showSearch;
+
+  const StationListWidget({super.key, this.showSearch = true});
 
   @override
   _StationListWidgetState createState() => _StationListWidgetState();
 }
 
 class _StationListWidgetState extends State<StationListWidget> {
-  int currentPage = 0;
-  int itemsPerPage = 10;
   String searchQuery = "";
 
   @override
@@ -32,19 +32,19 @@ class _StationListWidgetState extends State<StationListWidget> {
           return const Center(child: Text('No stations found'));
         }
 
-        // Mengelompokkan stasiun berdasarkan nama Balai
+        // Filter berdasarkan query jika showSearch aktif
+        final filteredStations = widget.showSearch
+            ? ctrl.stations.where((station) => station.balaiName!
+                .toLowerCase()
+                .contains(searchQuery.toLowerCase())).toList()
+            : ctrl.stations;
+
         final groupedStations = groupBy(
-          ctrl.stations.where((station) =>
-              station.balaiName!.toLowerCase().contains(searchQuery.toLowerCase())),
+          filteredStations,
           (station) => station.balaiName ?? 'Unknown',
         );
 
-        // Mengubah hasil pencarian menjadi daftar
         final stationEntries = groupedStations.entries.toList();
-        final totalPages = (stationEntries.length / itemsPerPage).ceil();
-
-        // Menampilkan 10 balai tetap
-        final displayedEntries = stationEntries.take(10).toList();
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -61,107 +61,90 @@ class _StationListWidgetState extends State<StationListWidget> {
                   Center(
                     child: Text(
                       'Informasi Instansi',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-
-                  // Search Bar
-                  TextField(
-                    style: const TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      hintText: "Cari Balai...",
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      prefixIcon: const Icon(Icons.search, color: Colors.black54),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.black26),
-                      ),
-                    ),
-                    onChanged: (query) {
-                      setState(() {
-                        searchQuery = query;
-                        currentPage = 0;
-                      });
-                    },
-                  ),
                   const SizedBox(height: 12),
 
-                  // List Informasi Balai
-                  // List Informasi Balai
-                  Expanded(
-                    child: PageView.builder(
-                      itemCount: totalPages,
-                      onPageChanged: (index) {
+                  // Search Bar (jika aktif)
+                  if (widget.showSearch) ...[
+                    TextField(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "Cari Balai...",
+                        hintStyle: TextStyle(color: Colors.grey[600]),
+                        prefixIcon: const Icon(Icons.search, color: Colors.black54),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.black26),
+                        ),
+                      ),
+                      onChanged: (query) {
                         setState(() {
-                          currentPage = index;
+                          searchQuery = query;
                         });
                       },
-                      itemBuilder: (context, pageIndex) {
-                        final paginatedEntries = stationEntries
-                            .skip(pageIndex * itemsPerPage)
-                            .take(itemsPerPage)
-                            .toList();
+                    ),
+                    const SizedBox(height: 12),
+                  ],
 
-                        return Column(
-                          children: paginatedEntries.map((entry) {
-                            final balaiName = entry.key;
-                            final stations = entry.value;
+                  // List Informasi Balai
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: stationEntries.length,
+                      itemBuilder: (context, index) {
+                        final entry = stationEntries[index];
+                        final balaiName = entry.key;
+                        final stations = entry.value;
 
-                            return InkWell(
-                              onTap: () {
-                               // Ambil lokasi pertama dari daftar stasiun pada balai yang dipilih
-                                final firstStation = stations.first;
-                                Get.toNamed(AppRoute.stations, arguments: {
-                                  'lat': firstStation.latitude,
-                                  'lng': firstStation.longitude,  
-                                  'balaiName': balaiName,
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(color: Colors.blueAccent, width: 2),
-                                  color: Colors.white,
+                        return InkWell(
+                          onTap: () {
+                            final firstStation = stations.first;
+                            Get.toNamed(AppRoute.stations, arguments: {
+                              'lat': firstStation.latitude,
+                              'lng': firstStation.longitude,
+                              'balaiName': balaiName,
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.blueAccent, width: 2),
+                              color: Colors.white,
+                            ),
+                            margin: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  balaiName,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                margin: const EdgeInsets.only(bottom: 12),
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // Nama Balai
-                                    Text(
-                                      balaiName,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 8),
-
-                                    // Statistik Online, Offline, dan Total Stasiun
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        _buildInfoItem(Icons.wifi, ctrl.countStation.online ?? 0),
-                                        _buildInfoItem(Icons.wifi_off, ctrl.countStation.offline ?? 0),
-                                        _buildInfoItem(Icons.devices, stations.length),
-                                      ],
-                                    ),
+                                    _buildInfoItem(Icons.wifi, ctrl.countStation.online ?? 0),
+                                    _buildInfoItem(Icons.wifi_off, ctrl.countStation.offline ?? 0),
+                                    _buildInfoItem(Icons.devices, stations.length),
                                   ],
                                 ),
-                              ),
-                            );
-                          }).toList(),
+                              ],
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -175,7 +158,6 @@ class _StationListWidgetState extends State<StationListWidget> {
     );
   }
 
-  // Widget untuk menampilkan ikon + jumlah data
   Widget _buildInfoItem(IconData icon, int count) {
     return Row(
       mainAxisSize: MainAxisSize.min,
