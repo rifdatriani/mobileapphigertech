@@ -40,24 +40,26 @@ class _StationMapState extends State<StationMap> {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
-      child: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: _targetPosition ?? const LatLng(-2.5489, 118.0149),
-          zoom: 4,
-        ),
-        zoomControlsEnabled: true,
-        myLocationEnabled: false,
-        onMapCreated: _onMapCreated,
-        markers: _targetPosition != null
-            ? {
-                Marker(
-                  markerId: const MarkerId('selectedStation'),
-                  position: _targetPosition!,
-                  infoWindow: const InfoWindow(title: 'Stasiun Terpilih'),
-                ),
-              }
-            : {},
-      ),
+      child:GoogleMap(
+  mapType: MapType.satellite, // Tambahkan ini
+  initialCameraPosition: CameraPosition(
+    target: _targetPosition ?? const LatLng(-2.5489, 118.0149),
+    zoom: 4,
+  ),
+  zoomControlsEnabled: true,
+  myLocationEnabled: false,
+  onMapCreated: _onMapCreated,
+  markers: _targetPosition != null
+      ? {
+          Marker(
+            markerId: const MarkerId('selectedStation'),
+            position: _targetPosition!,
+            infoWindow: const InfoWindow(title: 'Stasiun Terpilih'),
+          ),
+        }
+      : {},
+)
+
     );
   }
 }
