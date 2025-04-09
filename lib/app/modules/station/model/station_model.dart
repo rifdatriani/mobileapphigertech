@@ -58,14 +58,14 @@ class StationModel {
   final dynamic password;
   final dynamic warningStatus;
   final dynamic waterLevel;
-  // final dynamic awlrLastReading;
+  final AwlrlastModel? awlrLastReading;
+  final ArrlastModel? arrLastReading;
   final dynamic rainfall;
   final dynamic rainfallLastHour;
   final dynamic rainfallLastDay;
   final dynamic rainfallMax;
   final dynamic intensityLastHour;
   final dynamic intensityLastDay;
-  final dynamic arrLastReading;
 
   StationModel({
     this.id,
@@ -127,7 +127,7 @@ class StationModel {
     this.password,
     this.warningStatus,
     this.waterLevel,
-    // this.awlrLastReading,
+    this.awlrLastReading,
     this.rainfall,
     this.rainfallLastHour,
     this.rainfallLastDay,
@@ -197,14 +197,18 @@ class StationModel {
     password: json['password'],
     warningStatus: json['warningStatus'],
     waterLevel: json['waterLevel'],
-    // awlrLastReading: json['awlrLastReading'],
+    awlrLastReading: json['awlrLastReading'] != null
+      ? AwlrlastModel.fromJson(json['awlrLastReading'])
+      : null,
+  arrLastReading: json['arrLastReading'] != null
+      ? ArrlastModel.fromJson(json['arrLastReading'])
+      : null,
     rainfall: json['rainfall'],
     rainfallLastHour: json['rainfallLastHour'],
     rainfallLastDay: json['rainfallLastDay'],
     rainfallMax: json['rainfallMax'],
     intensityLastHour: json['intensityLastHour'],
     intensityLastDay: json['intensityLastDay'],
-    arrLastReading: json['arrLastReading'],
   );
 
   get status => null;
