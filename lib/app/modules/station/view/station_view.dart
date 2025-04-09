@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/controller/logout_controller.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
 import 'package:mobileapphigertech/app/modules/station/controller/station_controller.dart';
+import 'package:mobileapphigertech/app/modules/station/view/detail/detail_view.dart';
 import 'package:mobileapphigertech/app/modules/station/view/map/map_station.dart';
 
 class StationView extends GetView<StationController> {
@@ -116,23 +117,13 @@ class StationView extends GetView<StationController> {
                         }),
                       ),
                       const SizedBox(height: 2),
-                      Expanded(
+
+                                            Expanded(
                         child: ListView.builder(
                           itemCount: controller.filteredStations.length,
                           itemBuilder: (context, index) {
                             final station = controller.filteredStations[index];
-                            return ListTile(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0.h, horizontal: 12.h),
-                              title: Text(
-                                station.name,
-                                style: const TextStyle(color: Colors.black87),
-                              ),
-                              subtitle: Text(
-                                station.stationType,
-                                style: const TextStyle(color: Colors.black54),
-                              ),
-                            );
+                            return StationCard(station: station);
                           },
                         ),
                       ),
@@ -147,3 +138,24 @@ class StationView extends GetView<StationController> {
     );
   }
 }
+
+                      // Expanded(
+                      //   child: ListView.builder(
+                      //     itemCount: controller.filteredStations.length,
+                      //     itemBuilder: (context, index) {
+                      //       final station = controller.filteredStations[index];
+                      //       return ListTile(
+                      //         contentPadding: EdgeInsets.symmetric(
+                      //             vertical: 0.h, horizontal: 12.h),
+                      //         title: Text(
+                      //           station.name,
+                      //           style: const TextStyle(color: Colors.black87),
+                      //         ),
+                      //         subtitle: Text(
+                      //           station.stationType,
+                      //           style: const TextStyle(color: Colors.black54),
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
