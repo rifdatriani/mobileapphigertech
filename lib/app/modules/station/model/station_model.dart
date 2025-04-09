@@ -58,7 +58,7 @@ class StationModel {
   final dynamic password;
   final dynamic warningStatus;
   final dynamic waterLevel;
-  final dynamic awlrLastReading;
+  // final dynamic awlrLastReading;
   final dynamic rainfall;
   final dynamic rainfallLastHour;
   final dynamic rainfallLastDay;
@@ -127,7 +127,7 @@ class StationModel {
     this.password,
     this.warningStatus,
     this.waterLevel,
-    this.awlrLastReading,
+    // this.awlrLastReading,
     this.rainfall,
     this.rainfallLastHour,
     this.rainfallLastDay,
@@ -138,74 +138,104 @@ class StationModel {
   });
 
   factory StationModel.fromJson(Map<String, dynamic> json) => StationModel(
-        id: json['id'],
-        slug: json['slug'],
-        organizationCode: json['organizationCode'],
-        balaiName: json['balaiName'],
-        photo: json['photo'],
-        subDomain: json['subDomain'],
-        subDomainOld: json['subDomainOld'],
-        noRegister: json['noRegister'],
-        name: json['name'],
-        stationType: json['stationType'],
-        type: json['type'],
-        elevation: json['elevation'],
-        latitude: json['latitude'],
-        longitude: json['longitude'],
-        riverAreaId: json['riverAreaId'],
-        watershedId: json['watershedId'],
-        provinceId: json['provinceId'],
-        regencyId: json['regencyId'],
-        districtId: json['districtId'],
-        villageId: json['villageId'],
-        builtYear: json['builtYear'],
-        builtBy: json['builtBy'],
-        renovationYear: json['renovationYear'],
-        renovationBy: json['renovationBy'],
-        note: json['note'],
-        createdAt: json['createdAt'],
-        createdBy: json['createdBy'],
-        updatedAt: json['updatedAt'],
-        updatedBy: json['updatedBy'],
-        deletedAt: json['deletedAt'],
-        deletedBy: json['deletedBy'],
-        deviceId: json['deviceId'],
-        noGsm: json['noGsm'],
-        installedDate: json['installedDate'],
-        calibration: json['calibration'],
-        brandCode: json['brandCode'],
-        brandName: json['brandName'],
-        riverAreaName: json['riverAreaName'],
-        watershedName: json['watershedName'],
-        provinceName: json['provinceName'],
-        regencyName: json['regencyName'],
-        districtName: json['districtName'],
-        villageName: json['villageName'],
-        unitDisplay: json['unitDisplay'],
-        unitSensor: json['unitSensor'],
-        peilschaalBasisValue: json['peilschaalBasisValue'],
-        peilschaalBasisElevation: json['peilschaalBasisElevation'],
-        konstantaA: json['konstantaA'],
-        konstantaB: json['konstantaB'],
-        siaga1: json['siaga1'],
-        siaga2: json['siaga2'],
-        siaga3: json['siaga3'],
-        heightMercu: json['heightMercu'],
-        lastReadingAt: json['lastReadingAt'],
-        deviceStatus: json['deviceStatus'],
-        username: json['username'],
-        password: json['password'],
-        warningStatus: json['warningStatus'],
-        waterLevel: json['waterLevel'],
-        awlrLastReading: json['awlrLastReading'],
-        rainfall: json['rainfall'],
-        rainfallLastHour: json['rainfallLastHour'],
-        rainfallLastDay: json['rainfallLastDay'],
-        rainfallMax: json['rainfallMax'],
-        intensityLastHour: json['intensityLastHour'],
-        intensityLastDay: json['intensityLastDay'],
-        arrLastReading: json['arrLastReading'],
-      );
+    id: json['id'],
+    slug: json['slug'],
+    organizationCode: json['organizationCode'],
+    balaiName: json['balaiName'],
+    photo: json['photo'],
+    subDomain: json['subDomain'],
+    subDomainOld: json['subDomainOld'],
+    noRegister: json['noRegister'],
+    name: json['name'],
+    stationType: json['stationType'],
+    type: json['type'],
+    elevation: json['elevation'],
+    latitude: json['latitude'],
+    longitude: json['longitude'],
+    riverAreaId: json['riverAreaId'],
+    watershedId: json['watershedId'],
+    provinceId: json['provinceId'],
+    regencyId: json['regencyId'],
+    districtId: json['districtId'],
+    villageId: json['villageId'],
+    builtYear: json['builtYear'],
+    builtBy: json['builtBy'],
+    renovationYear: json['renovationYear'],
+    renovationBy: json['renovationBy'],
+    note: json['note'],
+    createdAt: json['createdAt'],
+    createdBy: json['createdBy'],
+    updatedAt: json['updatedAt'],
+    updatedBy: json['updatedBy'],
+    deletedAt: json['deletedAt'],
+    deletedBy: json['deletedBy'],
+    deviceId: json['deviceId'],
+    noGsm: json['noGsm'],
+    installedDate: json['installedDate'],
+    calibration: json['calibration'],
+    brandCode: json['brandCode'],
+    brandName: json['brandName'],
+    riverAreaName: json['riverAreaName'],
+    watershedName: json['watershedName'],
+    provinceName: json['provinceName'],
+    regencyName: json['regencyName'],
+    districtName: json['districtName'],
+    villageName: json['villageName'],
+    unitDisplay: json['unitDisplay'],
+    unitSensor: json['unitSensor'],
+    peilschaalBasisValue: json['peilschaalBasisValue'],
+    peilschaalBasisElevation: json['peilschaalBasisElevation'],
+    konstantaA: json['konstantaA'],
+    konstantaB: json['konstantaB'],
+    siaga1: json['siaga1'],
+    siaga2: json['siaga2'],
+    siaga3: json['siaga3'],
+    heightMercu: json['heightMercu'],
+    lastReadingAt: json['lastReadingAt'],
+    deviceStatus: json['deviceStatus'],
+    username: json['username'],
+    password: json['password'],
+    warningStatus: json['warningStatus'],
+    waterLevel: json['waterLevel'],
+    // awlrLastReading: json['awlrLastReading'],
+    rainfall: json['rainfall'],
+    rainfallLastHour: json['rainfallLastHour'],
+    rainfallLastDay: json['rainfallLastDay'],
+    rainfallMax: json['rainfallMax'],
+    intensityLastHour: json['intensityLastHour'],
+    intensityLastDay: json['intensityLastDay'],
+    arrLastReading: json['arrLastReading'],
+  );
 
   get status => null;
+}
+
+class AwlrlastModel {
+  String? deviceId;
+  String? waterLevel;
+  String? warningStatus;
+
+  AwlrlastModel({this.deviceId, this.waterLevel, this.warningStatus});
+
+  AwlrlastModel.fromJson(Map<String, dynamic> json) {
+    deviceId = json['deviceId'];
+    waterLevel = json['waterLevel'];
+    warningStatus = json['warningStatus'];
+  }
+}
+
+class ArrlastModel {
+  String? deviceId;
+  String? rainfall;
+  String? intensity;
+  String? deviceStatus;
+
+  ArrlastModel({this.deviceId, this.rainfall, this.intensity, this.deviceStatus});
+
+  ArrlastModel.fromJson(Map<String, dynamic> json) {
+    deviceId = json['deviceId'];
+    rainfall = json['rainfall'];
+    intensity = json['intensity'];
+    deviceStatus = json['deviceStatus'];
+  }
 }
