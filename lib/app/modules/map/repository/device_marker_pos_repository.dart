@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobileapphigertech/app/config/app_config.dart';
-import 'package:mobileapphigertech/app/data/model/marker_pos_model.dart';
+import 'package:mobileapphigertech/app/modules/map/model/marker_pos_model.dart';
 
 class DeviceMarkerRepository {
   final String _baseUrl = AppConfig.baseUrl;

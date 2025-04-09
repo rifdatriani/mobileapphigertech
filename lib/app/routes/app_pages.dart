@@ -6,6 +6,8 @@ import 'package:mobileapphigertech/app/modules/screens/splashscreen/view/splash_
 import 'package:mobileapphigertech/app/modules/screens/login/binding/login_binding.dart';
 import 'package:mobileapphigertech/app/modules/screens/login/view/login_view.dart';
 import 'package:mobileapphigertech/app/modules/home/binding/home_binding.dart';
+import 'package:mobileapphigertech/app/modules/settings/binding/settings_binding.dart';
+import 'package:mobileapphigertech/app/modules/settings/view/settings_view.dart';
 // import 'package:mobileapphigertech/app/modules/home/view/home_view.dart';
 import 'package:mobileapphigertech/app/modules/station/binding/station_binding.dart';
 import 'package:mobileapphigertech/app/modules/station/view/station_view.dart';
@@ -69,6 +71,12 @@ class AppPage {
       binding: LogoutBinding(),
       transition: Transition.rightToLeft,
     ),
+
+    GetPage(
+      name: '/settings',
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
+    )
 
     // Main Navigation Bar
    

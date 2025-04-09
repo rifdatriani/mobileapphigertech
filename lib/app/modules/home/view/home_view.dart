@@ -4,8 +4,6 @@ import 'package:mobileapphigertech/app/modules/home/controller/home_controller.d
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_grid_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_list_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
-import 'package:mobileapphigertech/app/modules/screens/logout/controller/logout_controller.dart';
-import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
@@ -29,17 +27,6 @@ class HomeView extends StatelessWidget {
           fit: BoxFit.contain,
         ),
         centerTitle: false,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.redAccent),
-            onPressed: () {
-              if (!Get.isRegistered<LogoutController>()) {
-                Get.put(LogoutController());
-              }
-              Get.dialog(const LogoutView());
-            },
-          ),
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -120,7 +107,7 @@ class HomeView extends StatelessWidget {
                 child: SizedBox(
                   height: size.height * 0.25, // Responsif berdasarkan tinggi layar
                   width: double.infinity,
-                  child: const StationMapWidget(),
+                  child: const StationMapWidget(height: 400),
                 ),
               ),
 

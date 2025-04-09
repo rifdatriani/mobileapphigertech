@@ -1,13 +1,10 @@
-// station_view.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/controller/logout_controller.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
 import 'package:mobileapphigertech/app/modules/station/controller/station_controller.dart';
-import 'package:mobileapphigertech/app/modules/station/view/detail/detail_view.dart';
 import 'package:mobileapphigertech/app/modules/station/view/map/map_station.dart';
-
 
 class StationView extends GetView<StationController> {
   const StationView({super.key});
@@ -79,7 +76,7 @@ class StationView extends GetView<StationController> {
                 }
 
                 if (controller.status.isError) {
-                  return Center(child: Text('Error: \${controller.status.errorMessage}'));
+                  return Center(child: Text('Error: ${controller.status.errorMessage}'));
                 }
 
                 if (controller.filteredStations.isEmpty) {
@@ -124,7 +121,18 @@ class StationView extends GetView<StationController> {
                           itemCount: controller.filteredStations.length,
                           itemBuilder: (context, index) {
                             final station = controller.filteredStations[index];
-                            return StationCard(station: station);
+                            return ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0.h, horizontal: 12.h),
+                              title: Text(
+                                station.name,
+                                style: const TextStyle(color: Colors.black87),
+                              ),
+                              subtitle: Text(
+                                station.stationType,
+                                style: const TextStyle(color: Colors.black54),
+                              ),
+                            );
                           },
                         ),
                       ),

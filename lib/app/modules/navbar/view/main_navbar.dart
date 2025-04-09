@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:mobileapphigertech/app/modules/home/view/home_view.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_list_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
-import 'package:mobileapphigertech/app/modules/screens/logout/controller/logout_controller.dart';
-import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
-// import 'package:mobileapphigertech/app/modules/settings/view/settings_view.dart';
+import 'package:mobileapphigertech/app/modules/settings/controller/settings_controller.dart';
+import 'package:mobileapphigertech/app/modules/settings/repository/settings_repository.dart';
+import 'package:mobileapphigertech/app/modules/settings/view/settings_view.dart';
 
 import '../controller/navbar_controller.dart';
 
@@ -14,45 +14,48 @@ class MainNavbar extends StatelessWidget {
   final NavbarController controller = Get.put(NavbarController());
 
   // AppBar reusable
-  PreferredSizeWidget buildAppBar() {
+  PreferredSizeWidget buildAppBar(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      title: Image.asset('assets/higertech.png', height: 50),
+      toolbarHeight: size.height * 0.07, // Ukuran AppBar responsif
+      title: Image.asset(
+        'assets/higertech.png',
+        height: size.height * 0.04, // Logo responsif
+        fit: BoxFit.contain,
+      ),
       centerTitle: false,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.logout, color: Colors.redAccent),
-          onPressed: () {
-            if (!Get.isRegistered<LogoutController>()) {
-              Get.put(LogoutController());
-            }
-            Get.dialog(const LogoutView());
-          },
-        ),
-      ],
+
     );
   }
 
   @override
   Widget build(BuildContext context) {
+     // Registrasi controller & repository untuk Settings
+    if (!Get.isRegistered<SettingsController>()) {
+      Get.put(SettingsRepository());
+      Get.put(SettingsController(Get.find()));
+    }
+
     final List<Widget> pages = [
       HomeView(), // Sudah memiliki AppBar sendiri
       Scaffold(
-        appBar: buildAppBar(),
+        appBar: buildAppBar(context),
         body: const Padding(
-          padding: EdgeInsets.only(top: 8.0), // Tambahan agar Card tidak terlalu atas
+          padding: EdgeInsets.only(top: 8.0),
           child: StationListWidget(showSearch: true),
         ),
       ),
       Scaffold(
-        appBar: buildAppBar(),
-        body: const Center(child: StationMapWidget()),
+        appBar: buildAppBar(context),
+        body: const StationMapWidget(),
       ),
-      // Scaffold(
-      //   appBar: buildAppBar(),
-      //   body: SettingsView(),
-      // ),
+      Scaffold(
+        appBar: buildAppBar(context),
+        body: SettingsView(),
+      ),
     ];
 
     return Obx(() => Scaffold(

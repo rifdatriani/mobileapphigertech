@@ -1,15 +1,14 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobileapphigertech/app/data/model/marker_pos_model.dart';
-import 'package:mobileapphigertech/app/data/repository/device_marker_pos_repository.dart';
+import 'package:mobileapphigertech/app/modules/map/model/marker_pos_model.dart';
+import 'package:mobileapphigertech/app/modules/map/repository/device_marker_pos_repository.dart';
 
 class StationMapWidget extends StatefulWidget {
-  final double height;
+  final double? height; // Nullable: bisa null kalau mau fullscreen
 
-  const StationMapWidget({super.key, this.height = 400});
+  const StationMapWidget({super.key, this.height});
 
   @override
   State<StationMapWidget> createState() => _StationMapWidgetState();
@@ -53,11 +52,6 @@ class _StationMapWidgetState extends State<StationMapWidget> {
 
     try {
       List<MapMarkerModel> stations = await repository.fetchDeviceMarkers();
-      print('Station count: ${stations.length}');
-      print('📌 Stations from API:');
-      for (var s in stations) {
-        print('${s.name} - ${s.latitude}, ${s.longitude}, ${s.type}, ${s.status}');
-      }
 
       final newMarkers = stations.map((station) {
         BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
@@ -95,7 +89,6 @@ class _StationMapWidgetState extends State<StationMapWidget> {
 
       Future.delayed(const Duration(milliseconds: 300), () => _zoomToFitMarkers());
     } catch (e) {
-      print('Error fetching station markers: $e');
       if (!mounted) return;
       setState(() {
         _isLoading = false;
@@ -137,23 +130,31 @@ class _StationMapWidgetState extends State<StationMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: SizedBox(
-        height: widget.height,
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : GoogleMap(
-                onMapCreated: _onMapCreated,
-                initialCameraPosition: CameraPosition(
-                  target: _center,
-                  zoom: 4.5,
-                ),
-                mapType: MapType.hybrid,
-                markers: _markers,
-                zoomControlsEnabled: false,
-              ),
-      ),
-    );
+    Widget map = _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 4.5,
+            ),
+            mapType: MapType.hybrid,
+            markers: _markers,
+            zoomControlsEnabled: false,
+          );
+
+    // Kalau height diberikan, tampil dengan tinggi tertentu + border radius
+    if (widget.height != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: SizedBox(
+          height: widget.height,
+          child: map,
+        ),
+      );
+    }
+
+    // Kalau height null, berarti fullscreen (seluruh sisa layar)
+    return SizedBox.expand(child: map);
   }
 }
