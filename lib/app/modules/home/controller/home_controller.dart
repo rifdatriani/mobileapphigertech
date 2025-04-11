@@ -1,5 +1,8 @@
+
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobileapphigertech/app/modules/home/model/count_station_model.dart';
+import 'package:mobileapphigertech/app/modules/home/model/marker_model.dart';
 import 'package:mobileapphigertech/app/modules/home/repository/home_repository.dart';
 import 'package:mobileapphigertech/app/modules/station/model/station_model.dart';
 
@@ -10,6 +13,10 @@ class HomeController extends GetxController with StateMixin<dynamic> {
   final RxList<StationModel> filteredStations =
       <StationModel>[].obs; // Tambahkan ini
   final RxString searchQuery = ''.obs; // Query pencarian
+
+  final List<MarkerModel> allLocations = [];
+  List<Marker> markers = [];
+  String? filteredType;
 
   @override
   void onInit() {
@@ -23,6 +30,15 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     try {
       final data = await _repository.fetchStationList();
 
+      data.where((s) => s.latitude != null && s.longitude != null).forEach((s) {
+        allLocations.add(
+          MarkerModel(
+            latitude: double.tryParse(s.latitude.toString()) ?? 0,
+            longitude: double.tryParse(s.longitude.toString()) ?? 0,
+            type: s.stationType?.toString() ?? 'Unknown',
+          ),
+        );
+      });
       stations.clear();
       stations.addAll(data);
       filteredStations.assignAll(data); // Inisialisasi dengan semua data
@@ -49,7 +65,9 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     }
 
     update(); // untuk GetBuilder
+  updateMarkers();
   }
+
 
   // Fungsi pencarian balai
   void searchBalai(String query) {
@@ -64,6 +82,49 @@ class HomeController extends GetxController with StateMixin<dynamic> {
               station.balaiName!.toLowerCase().contains(query.toLowerCase()),
         ),
       );
+    }
+  }
+
+    /* Contoh cara menampilkan Marker */
+
+  void updateMarkers() {
+    final filtered = (filteredType == null || filteredType!.isEmpty) ? allLocations : allLocations.where((e) => e.type == filteredType).toList();
+
+    markers =
+        filtered
+            .map(
+              (loc) => Marker(
+                markerId: MarkerId('${loc.latitude},${loc.longitude}'),
+                position: LatLng(loc.latitude, loc.longitude),
+                icon: getMarkerColor(loc.type), // ← custom warna
+                infoWindow: InfoWindow(title: loc.type),
+              ),
+            )
+            .toList();
+
+    update();
+  }
+
+  void setFilter(String type) {
+    filteredType = type;
+    updateMarkers();
+  }
+
+  void clearFilter() {
+    filteredType = null;
+    updateMarkers();
+  }
+
+  BitmapDescriptor getMarkerColor(String type) {
+    switch (type.toUpperCase()) {
+      case 'AWLR':
+        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+      case 'ARR':
+        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+      case 'AWS':
+        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+      default:
+        return BitmapDescriptor.defaultMarker; // merah
     }
   }
 }

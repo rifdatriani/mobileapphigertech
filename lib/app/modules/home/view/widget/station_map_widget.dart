@@ -6,9 +6,10 @@ import 'package:mobileapphigertech/app/modules/map/model/marker_pos_model.dart';
 import 'package:mobileapphigertech/app/modules/map/repository/device_marker_pos_repository.dart';
 
 class StationMapWidget extends StatefulWidget {
-  final double? height; // Nullable: bisa null kalau mau fullscreen
+  final double? height;
+  final List<Marker>? markers;
 
-  const StationMapWidget({super.key, this.height});
+  const StationMapWidget({super.key, this.height, this.markers});
 
   @override
   State<StationMapWidget> createState() => _StationMapWidgetState();
@@ -35,7 +36,11 @@ class _StationMapWidgetState extends State<StationMapWidget> {
     await _fetchMarkersFromApi();
   }
 
-  Future<BitmapDescriptor> _getCustomIcon(String path, int width, int height) async {
+  Future<BitmapDescriptor> _getCustomIcon(
+    String path,
+    int width,
+    int height,
+  ) async {
     final byteData = await rootBundle.load(path);
     final codec = await ui.instantiateImageCodec(
       byteData.buffer.asUint8List(),
@@ -43,7 +48,9 @@ class _StationMapWidgetState extends State<StationMapWidget> {
       targetHeight: height,
     );
     final frame = await codec.getNextFrame();
-    final imageData = await frame.image.toByteData(format: ui.ImageByteFormat.png);
+    final imageData = await frame.image.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
     return BitmapDescriptor.fromBytes(imageData!.buffer.asUint8List());
   }
 
@@ -53,32 +60,38 @@ class _StationMapWidgetState extends State<StationMapWidget> {
     try {
       List<MapMarkerModel> stations = await repository.fetchDeviceMarkers();
 
-      final newMarkers = stations.map((station) {
-        BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+      final newMarkers =
+          stations.map((station) {
+            BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
-        final stationType = (station.type ?? '').toUpperCase();
+            final stationType = (station.type ?? '').toUpperCase();
 
-        if (station.status.toLowerCase() == 'online') {
-          markerIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
-        } else {
-          markerIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
-        }
+            if (station.status.toLowerCase() == 'online') {
+              markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueGreen,
+              );
+            } else {
+              markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueRed,
+              );
+            }
 
-        if (stationType == 'AWLR' && iconAWLR != null) {
-          markerIcon = iconAWLR!;
-        } else if (stationType == 'ARR' && iconARR != null) {
-          markerIcon = iconARR!;
-        }
+            if (stationType == 'AWLR' && iconAWLR != null) {
+              markerIcon = iconAWLR!;
+            } else if (stationType == 'ARR' && iconARR != null) {
+              markerIcon = iconARR!;
+            }
 
-        return Marker(
-          markerId: MarkerId(station.id),
-          position: LatLng(station.latitude, station.longitude),
-          icon: markerIcon,
-          infoWindow: InfoWindow(
-            title: station.name.isNotEmpty ? station.name : 'Unnamed Station',
-          ),
-        );
-      }).toSet();
+            return Marker(
+              markerId: MarkerId(station.id),
+              position: LatLng(station.latitude, station.longitude),
+              icon: markerIcon,
+              infoWindow: InfoWindow(
+                title:
+                    station.name.isNotEmpty ? station.name : 'Unnamed Station',
+              ),
+            );
+          }).toSet();
 
       if (!mounted) return;
 
@@ -87,7 +100,10 @@ class _StationMapWidgetState extends State<StationMapWidget> {
         _isLoading = false;
       });
 
-      Future.delayed(const Duration(milliseconds: 300), () => _zoomToFitMarkers());
+      Future.delayed(
+        const Duration(milliseconds: 300),
+        () => _zoomToFitMarkers(),
+      );
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -130,31 +146,28 @@ class _StationMapWidgetState extends State<StationMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget map = _isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 4.5,
-            ),
-            mapType: MapType.hybrid,
-            markers: _markers,
-            zoomControlsEnabled: false,
-          );
+    Widget map =
+        _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(target: _center, zoom: 4.5),
+              mapType: MapType.satellite,
+              markers: {
+                ..._markers,
+                if (widget.markers != null) ...widget.markers!,
+              },
+              myLocationEnabled: false,
+              zoomControlsEnabled: true,
+            );
 
-    // Kalau height diberikan, tampil dengan tinggi tertentu + border radius
     if (widget.height != null) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: SizedBox(
-          height: widget.height,
-          child: map,
-        ),
+        child: SizedBox(height: widget.height, child: map),
       );
     }
 
-    // Kalau height null, berarti fullscreen (seluruh sisa layar)
     return SizedBox.expand(child: map);
   }
 }

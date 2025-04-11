@@ -4,6 +4,7 @@ import 'package:mobileapphigertech/app/modules/home/controller/home_controller.d
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_grid_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_list_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
+// import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
@@ -62,7 +63,10 @@ class HomeView extends StatelessWidget {
                   flex: 3,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: const StationMapWidget(),
+                    child: GetBuilder<HomeController>(
+  builder: (controller) => StationMapWidget(markers: controller.markers),
+),
+
                   ),
                 ),
                 SizedBox(width: size.width * 0.02),
@@ -107,7 +111,15 @@ class HomeView extends StatelessWidget {
                 child: SizedBox(
                   height: size.height * 0.25, // Responsif berdasarkan tinggi layar
                   width: double.infinity,
-                  child: const StationMapWidget(height: 400),
+                  child: GetBuilder<HomeController>(
+  builder: (controller) {
+    return StationMapWidget(
+      height: 400,
+      markers: controller.markers,
+    );
+  },
+)
+
                 ),
               ),
 

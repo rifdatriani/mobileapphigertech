@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobileapphigertech/app/modules/home/controller/home_controller.dart';
 import 'package:mobileapphigertech/app/modules/home/view/home_view.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_list_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
@@ -50,7 +51,10 @@ class MainNavbar extends StatelessWidget {
       ),
       Scaffold(
         appBar: buildAppBar(context),
-        body: const StationMapWidget(),
+        body:  GetBuilder<HomeController>(
+  builder: (controller) => StationMapWidget(markers: controller.markers),
+),
+
       ),
       Scaffold(
         appBar: buildAppBar(context),
