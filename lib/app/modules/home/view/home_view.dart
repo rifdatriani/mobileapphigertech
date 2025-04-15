@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mobileapphigertech/app/modules/home/controller/home_controller.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_grid_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_list_widget.dart';
-import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
+import 'package:mobileapphigertech/app/modules/map/widget/station_map_widget.dart';
 // import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
 
 class HomeView extends StatelessWidget {

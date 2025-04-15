@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mobileapphigertech/app/modules/home/controller/home_controller.dart';
 import 'package:mobileapphigertech/app/modules/home/view/home_view.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_list_widget.dart';
-import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
+import 'package:mobileapphigertech/app/modules/map/widget/station_map_widget.dart';
 import 'package:mobileapphigertech/app/modules/settings/controller/settings_controller.dart';
 import 'package:mobileapphigertech/app/modules/settings/repository/settings_repository.dart';
 import 'package:mobileapphigertech/app/modules/settings/view/settings_view.dart';
