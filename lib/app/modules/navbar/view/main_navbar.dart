@@ -28,13 +28,12 @@ class MainNavbar extends StatelessWidget {
         fit: BoxFit.contain,
       ),
       centerTitle: false,
-
     );
   }
 
   @override
   Widget build(BuildContext context) {
-     // Registrasi controller & repository untuk Settings
+    // Registrasi controller & repository untuk Settings
     if (!Get.isRegistered<SettingsController>()) {
       Get.put(SettingsRepository());
       Get.put(SettingsController(Get.find()));
@@ -51,32 +50,34 @@ class MainNavbar extends StatelessWidget {
       ),
       Scaffold(
         appBar: buildAppBar(context),
-        body:  GetBuilder<HomeController>(
-  builder: (controller) => StationMapWidget(markers: controller.markers),
-),
-
+        body: GetBuilder<HomeController>(
+          builder:
+              (controller) => StationMapWidget(markers: controller.markers),
+        ),
       ),
-      Scaffold(
-        appBar: buildAppBar(context),
-        body: SettingsView(),
-      ),
+      Scaffold(appBar: buildAppBar(context), body: SettingsView()),
     ];
 
-    return Obx(() => Scaffold(
-          body: pages[controller.selectedIndex.value],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.selectedIndex.value,
-            onTap: controller.changePage,
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
-              BottomNavigationBarItem(icon: Icon(Icons.list), label: "Instansi"),
-              BottomNavigationBarItem(icon: Icon(Icons.map), label: "Peta"),
-              BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Pengaturan"),
-            ],
-          ),
-        ));
+    return Obx(
+      () => Scaffold(
+        body: pages[controller.selectedIndex.value],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: controller.selectedIndex.value,
+          onTap: controller.changePage,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
+            BottomNavigationBarItem(icon: Icon(Icons.list), label: "Instansi"),
+            BottomNavigationBarItem(icon: Icon(Icons.map), label: "Peta"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: "Pengaturan",
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

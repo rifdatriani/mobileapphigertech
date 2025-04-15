@@ -15,10 +15,12 @@ class SettingsView extends GetView<SettingsController> {
         ListTile(
           leading: const Icon(Icons.brightness_6),
           title: const Text("Mode Gelap"),
-          trailing: Obx(() => Switch(
-            value: controller.isDarkMode.value,
-            onChanged: (val) => controller.toggleDarkMode(),
-          )),
+          trailing: Obx(
+            () => Switch(
+              value: controller.isDarkMode.value,
+              onChanged: (val) => controller.toggleDarkMode(),
+            ),
+          ),
         ),
         const Divider(),
         ListTile(

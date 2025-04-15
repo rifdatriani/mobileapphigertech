@@ -6,7 +6,7 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SplashController controller = Get.find();
-    
+
     return Scaffold(
       body: Center(
         child: Column(

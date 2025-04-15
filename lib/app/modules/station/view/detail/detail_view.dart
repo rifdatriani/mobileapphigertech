@@ -21,13 +21,18 @@ class StationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double? waterLevel = double.tryParse(station.waterLevel?.toString() ?? '');
+    final double? waterLevel = double.tryParse(
+      station.waterLevel?.toString() ?? '',
+    );
     final double? siaga1 = double.tryParse(station.siaga1?.toString() ?? '');
     final double? siaga2 = double.tryParse(station.siaga2?.toString() ?? '');
     final double? siaga3 = double.tryParse(station.siaga3?.toString() ?? '');
 
     String status = 'TIDAK ADA DATA';
-    if (waterLevel != null && siaga1 != null && siaga2 != null && siaga3 != null) {
+    if (waterLevel != null &&
+        siaga1 != null &&
+        siaga2 != null &&
+        siaga3 != null) {
       if (waterLevel >= siaga1) {
         status = 'AWAS';
       } else if (waterLevel >= siaga2) {
@@ -42,8 +47,13 @@ class StationCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 4,
       child: ListTile(
-        title: Text(station.name ?? '-', style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text('Tinggi Muka Air: ${station.waterLevel ?? '-'} ${station.unitDisplay ?? ''}'),
+        title: Text(
+          station.name ?? '-',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          'Tinggi Muka Air: ${station.waterLevel.toString()} ${station.unitDisplay ?? ''}',
+        ),
         trailing: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
@@ -52,7 +62,10 @@ class StationCard extends StatelessWidget {
           ),
           child: Text(
             status,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

@@ -7,7 +7,9 @@ class LogoutController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear(); // Hapus sesi pengguna
-      Get.offAllNamed(AppRoute.login); // Pindah ke halaman login dan hapus semua halaman sebelumnya
+      Get.offAllNamed(
+        AppRoute.login,
+      ); // Pindah ke halaman login dan hapus semua halaman sebelumnya
     } catch (e) {
       print("Error logout: $e");
     }

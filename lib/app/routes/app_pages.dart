@@ -40,9 +40,8 @@ class AppPage {
     //   binding: HomeBinding(),
     //   transition: Transition.rightToLeft,
     // ),
-
-     GetPage(
-      name: AppRoute.home ,
+    GetPage(
+      name: AppRoute.home,
       page: () => MainNavbar(),
       binding: HomeBinding(),
       transition: Transition.fadeIn,
@@ -76,9 +75,8 @@ class AppPage {
       name: '/settings',
       page: () => const SettingsView(),
       binding: SettingsBinding(),
-    )
+    ),
 
     // Main Navigation Bar
-   
   ];
 }

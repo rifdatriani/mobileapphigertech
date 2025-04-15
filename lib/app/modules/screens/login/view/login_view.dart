@@ -8,7 +8,7 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController controller = Get.put(LoginController());
-    
+
     // Mendapatkan ukuran layar
     final size = MediaQuery.of(context).size;
     final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
@@ -16,23 +16,33 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(), // Menutup keyboard saat tap di luar
+          onTap:
+              () =>
+                  FocusScope.of(
+                    context,
+                  ).unfocus(), // Menutup keyboard saat tap di luar
           child: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: size.height - MediaQuery.of(context).viewInsets.bottom - MediaQuery.of(context).padding.top,
+                minHeight:
+                    size.height -
+                    MediaQuery.of(context).viewInsets.bottom -
+                    MediaQuery.of(context).padding.top,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  mainAxisAlignment: isKeyboardOpen 
-                    ? MainAxisAlignment.start 
-                    : MainAxisAlignment.center,
+                  mainAxisAlignment:
+                      isKeyboardOpen
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.center,
                   children: [
                     if (!isKeyboardOpen || size.height > 600) ...[
                       Image.asset(
-                        'assets/hgt.png', 
-                        width: size.width * 0.25, // Responsif berdasarkan lebar layar
+                        'assets/hgt.png',
+                        width:
+                            size.width *
+                            0.25, // Responsif berdasarkan lebar layar
                         height: size.width * 0.25,
                         fit: BoxFit.contain,
                       ),
@@ -92,7 +102,7 @@ class LoginView extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          "Remember me", 
+                          "Remember me",
                           style: TextStyle(color: Colors.black),
                         ),
                       ],

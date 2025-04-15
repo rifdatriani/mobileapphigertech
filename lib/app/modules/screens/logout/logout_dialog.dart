@@ -7,23 +7,25 @@ class LogoutDialog {
   static void show(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Konfirmasi Logout"),
-        content: const Text("Apakah Anda yakin ingin logout?"),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(), // Gunakan GetX untuk menutup dialog
-            child: const Text("Batal"),
+      builder:
+          (context) => AlertDialog(
+            title: const Text("Konfirmasi Logout"),
+            content: const Text("Apakah Anda yakin ingin logout?"),
+            actions: [
+              TextButton(
+                onPressed:
+                    () => Get.back(), // Gunakan GetX untuk menutup dialog
+                child: const Text("Batal"),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Get.back(); // Tutup dialog dulu
+                  await _logout();
+                },
+                child: const Text("Logout"),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () async {
-              Get.back(); // Tutup dialog dulu
-              await _logout();
-            },
-            child: const Text("Logout"),
-          ),
-        ],
-      ),
     );
   }
 

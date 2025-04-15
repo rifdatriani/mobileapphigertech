@@ -12,19 +12,23 @@ class StationController extends GetxController with StateMixin<dynamic> {
   int selectedIndex = 0;
   String? balaiName;
   List<String> organizationCodes = [];
-String selectedOrganizationCode = '';
+  String selectedOrganizationCode = '';
+  List<dynamic> stationTypes = [];
+
+
+  
+
 
 
   @override
-  void onInit() {
-    super.onInit();
+void onInit()  {
+  super.onInit();
+  final args = Get.arguments as Map<String, dynamic>?;
+  balaiName = args?['balaiName'];
+  fetchStations().then((_) => updateStationTypesForBalai());
+}
 
-    final args = Get.arguments as Map<String, dynamic>?;
-    balaiName = args?['balaiName'];
-    fetchStations();
-  }
-
-  void fetchStations() async {
+  Future <void> fetchStations() async {
     change(null, status: RxStatus.loading());
 
     try {
@@ -33,18 +37,25 @@ String selectedOrganizationCode = '';
       stations.clear();
       stations.addAll(data);
       // Ambil list organizationCode unik dari data
-organizationCodes = stations
-    .map((s) => s.organizationCode?.toString() ?? '')
-    .toSet()
-    .where((e) => e.isNotEmpty)
-    .toList();
+      organizationCodes =
+          stations
+              .map((s) => s.organizationCode?.toString() ?? '')
+              .toSet()
+              .where((e) => e.isNotEmpty)
+              .toList();
 
-selectedOrganizationCode = organizationCodes.isNotEmpty ? organizationCodes.first : '';
+      selectedOrganizationCode =
+          organizationCodes.isNotEmpty ? organizationCodes.first : '';
+
 
 
       applyFilter();
 
-      change(null, status: filteredStations.isEmpty ? RxStatus.empty() : RxStatus.success());
+      change(
+        null,
+        status:
+            filteredStations.isEmpty ? RxStatus.empty() : RxStatus.success(),
+      );
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
@@ -64,20 +75,59 @@ selectedOrganizationCode = organizationCodes.isNotEmpty ? organizationCodes.firs
     update();
   }
 
-  void applyFilter() {
-    List<StationModel> tempList = balaiName != null
-        ? stations.where((s) => s.balaiName == balaiName).toList()
-        : List.from(stations);
+void applyFilter() {
+  List<StationModel> tempList =
+      balaiName != null
+          ? stations.where((s) => s.balaiName == balaiName).toList()
+          : List.from(stations);
 
-    final stationTypes = {
-      0: ['AWLR', 'PDA'],
-      1: ['ARR', 'PCH'],
-      2: ['AWS'],
-    };
-
-    final allowedTypes = stationTypes[selectedIndex] ?? [];
-    tempList = tempList.where((s) => allowedTypes.contains(s.stationType)).toList();
-
-    filteredStations = tempList;
+  if (stationTypes.isNotEmpty) {
+    final currentTab = stationTypes[selectedIndex];
+    tempList = tempList.where((s) => s.stationType == currentTab).toList();
   }
+
+  filteredStations = tempList;
 }
+
+
+
+
+  void updateStationTypesByOrganization(String organizationCode) {
+  final filteredByOrg = stations.where((s) => s.organizationCode == organizationCode).toList();
+
+  stationTypes = filteredByOrg
+      .map((s) => s.stationType ?? '')
+      .toSet()
+      .where((e) => e.isNotEmpty)
+      .toList();
+
+  update();
+}
+
+void updateStationTypesForBalai() {
+  final types = stations
+      .where((s) => s.balaiName == balaiName)
+      .map((s) => s.stationType)
+      .whereType<String>()
+      .toSet()
+      .toList();
+
+  stationTypes = types;
+  selectedIndex = 0;
+  applyFilter();
+  update();
+}
+
+
+
+}
+
+  const Map<String, String> stationTypeLabels = {
+    'AWLR': 'Pos Curah Hujan',
+    'PDA': 'Pos Duga Air',
+    'ARR': 'Pos Duga Air',
+    'PCH': 'Pos Curah Hujan',
+    'AWS': 'Pos Klimatologi',
+    // 'PDA PCH': 'PDA & PCH',
+    
+  };

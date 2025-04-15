@@ -62,7 +62,7 @@ class CountStationModel {
       'totalFM': totalFM,
       'totalAVWR': totalAVWR,
       'totalWQ': totalWQ,
-      'balaiName' : balaiName,
+      'balaiName': balaiName,
       'totalOrganization': totalOrganization,
     };
   }

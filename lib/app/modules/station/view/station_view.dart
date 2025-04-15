@@ -14,11 +14,11 @@ class StationView extends GetView<StationController> {
   Widget build(BuildContext context) {
     final args = Get.arguments as Map<String, dynamic>?;
 
-    final String balai = args?['balaiName'] ?? 'Station';
+        final String balai = args?['balaiName'] ?? 'Station';
     final double latitude = args?['lat'] ?? -2.5489;
     final double longitude = args?['lng'] ?? 118.0149;
 
-    List<String> tabs = ['Pos Duga Air', 'Pos Curah Hujan', 'Pos Klimatlogi'];
+    final List<dynamic> tabs = controller.stationTypes;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,10 +61,7 @@ class StationView extends GetView<StationController> {
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
                 height: 200,
-                child: StationMap(
-                  latitude: latitude,
-                  longitude: longitude,
-                ),
+                child: StationMap(latitude: latitude, longitude: longitude),
               ),
             ),
           ),
@@ -77,7 +74,9 @@ class StationView extends GetView<StationController> {
                 }
 
                 if (controller.status.isError) {
-                  return Center(child: Text('Error: ${controller.status.errorMessage}'));
+                  return Center(
+                    child: Text('Error: ${controller.status.errorMessage}'),
+                  );
                 }
 
                 if (controller.filteredStations.isEmpty) {
@@ -90,8 +89,9 @@ class StationView extends GetView<StationController> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(tabs.length, (index) {
+                        children: List.generate(controller.stationTypes.length, (index) {
                           final isSelected = controller.selectedIndex == index;
+                          final tabName = stationTypeLabels[controller.stationTypes[index]] ?? controller.stationTypes[index];
                           return Expanded(
                             child: GestureDetector(
                               onTap: () => controller.changeTab(index),
@@ -105,7 +105,7 @@ class StationView extends GetView<StationController> {
                                   border: Border.all(color: Colors.grey.shade300),
                                 ),
                                 child: Text(
-                                  tabs[index],
+                                  tabName,
                                   style: TextStyle(
                                     color: isSelected ? Colors.white : Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -118,7 +118,7 @@ class StationView extends GetView<StationController> {
                       ),
                       const SizedBox(height: 2),
 
-                                            Expanded(
+                      Expanded(
                         child: ListView.builder(
                           itemCount: controller.filteredStations.length,
                           itemBuilder: (context, index) {
@@ -139,23 +139,23 @@ class StationView extends GetView<StationController> {
   }
 }
 
-                      // Expanded(
-                      //   child: ListView.builder(
-                      //     itemCount: controller.filteredStations.length,
-                      //     itemBuilder: (context, index) {
-                      //       final station = controller.filteredStations[index];
-                      //       return ListTile(
-                      //         contentPadding: EdgeInsets.symmetric(
-                      //             vertical: 0.h, horizontal: 12.h),
-                      //         title: Text(
-                      //           station.name,
-                      //           style: const TextStyle(color: Colors.black87),
-                      //         ),
-                      //         subtitle: Text(
-                      //           station.stationType,
-                      //           style: const TextStyle(color: Colors.black54),
-                      //         ),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
+// Expanded(
+//   child: ListView.builder(
+//     itemCount: controller.filteredStations.length,
+//     itemBuilder: (context, index) {
+//       final station = controller.filteredStations[index];
+//       return ListTile(
+//         contentPadding: EdgeInsets.symmetric(
+//             vertical: 0.h, horizontal: 12.h),
+//         title: Text(
+//           station.name,
+//           style: const TextStyle(color: Colors.black87),
+//         ),
+//         subtitle: Text(
+//           station.stationType,
+//           style: const TextStyle(color: Colors.black54),
+//         ),
+//       );
+//     },
+//   ),
+// ),

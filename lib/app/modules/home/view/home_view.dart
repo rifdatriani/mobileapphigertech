@@ -16,14 +16,14 @@ class HomeView extends StatelessWidget {
     // Mendapatkan ukuran screen
     final size = MediaQuery.of(context).size;
     final isTablet = size.width > 600;
-    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         toolbarHeight: size.height * 0.07, // Ukuran AppBar responsif
         title: Image.asset(
-          'assets/higertech.png', 
+          'assets/higertech.png',
           height: size.height * 0.04, // Logo responsif
           fit: BoxFit.contain,
         ),
@@ -35,9 +35,10 @@ class HomeView extends StatelessWidget {
           return await Future.delayed(const Duration(seconds: 1));
         },
         child: SafeArea(
-          child: isTablet 
-              ? _buildTabletLayout(context, size)
-              : _buildMobileLayout(context, size),
+          child:
+              isTablet
+                  ? _buildTabletLayout(context, size)
+                  : _buildMobileLayout(context, size),
         ),
       ),
     );
@@ -64,27 +65,23 @@ class HomeView extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: GetBuilder<HomeController>(
-  builder: (controller) => StationMapWidget(markers: controller.markers),
-),
-
+                      builder:
+                          (controller) =>
+                              StationMapWidget(markers: controller.markers),
+                    ),
                   ),
                 ),
                 SizedBox(width: size.width * 0.02),
                 // Station Overview Grid
-                const Expanded(
-                  flex: 2,
-                  child: StationOverviewGrid(),
-                ),
+                const Expanded(flex: 2, child: StationOverviewGrid()),
               ],
             ),
           ),
-          
+
           SizedBox(height: size.height * 0.02),
-          
+
           // List stasiun
-          Expanded(
-            child: StationListWidget(showSearch: false),
-          ),
+          Expanded(child: StationListWidget(showSearch: false)),
         ],
       ),
     );
@@ -96,7 +93,10 @@ class HomeView extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minHeight: size.height - AppBar().preferredSize.height - MediaQuery.of(context).padding.top,
+          minHeight:
+              size.height -
+              AppBar().preferredSize.height -
+              MediaQuery.of(context).padding.top,
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -109,17 +109,17 @@ class HomeView extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: SizedBox(
-                  height: size.height * 0.25, // Responsif berdasarkan tinggi layar
+                  height:
+                      size.height * 0.25, // Responsif berdasarkan tinggi layar
                   width: double.infinity,
                   child: GetBuilder<HomeController>(
-  builder: (controller) {
-    return StationMapWidget(
-      height: 400,
-      markers: controller.markers,
-    );
-  },
-)
-
+                    builder: (controller) {
+                      return StationMapWidget(
+                        height: 400,
+                        markers: controller.markers,
+                      );
+                    },
+                  ),
                 ),
               ),
 
@@ -127,7 +127,7 @@ class HomeView extends StatelessWidget {
 
               // Station Overview Grid
               const StationOverviewGrid(),
-              
+
               SizedBox(height: size.height * 0.015),
 
               // List stasiun dengan tinggi tetap
@@ -146,9 +146,6 @@ class HomeView extends StatelessWidget {
 // Widget wrapper untuk StationOverviewGrid jika perlu disesuaikan untuk responsivitas
 extension StationOverviewGridExt on StationOverviewGrid {
   Widget withResponsiveHeight(double height) {
-    return SizedBox(
-      height: height,
-      child: this,
-    );
+    return SizedBox(height: height, child: this);
   }
 }

@@ -40,10 +40,14 @@ class _StationListWidgetState extends State<StationListWidget> {
         }
 
         // Filter data berdasarkan pencarian
-        final filteredStations = ctrl.stations.where((station) {
-          if (!widget.showSearch) return true;
-          return station.balaiName?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false;
-        }).toList();
+        final filteredStations =
+            ctrl.stations.where((station) {
+              if (!widget.showSearch) return true;
+              return station.balaiName?.toLowerCase().contains(
+                    searchQuery.toLowerCase(),
+                  ) ??
+                  false;
+            }).toList();
 
         // Group by balai
         final groupedStations = groupBy(
@@ -56,7 +60,9 @@ class _StationListWidgetState extends State<StationListWidget> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             elevation: 3,
             color: Colors.grey[200],
             child: Padding(
@@ -84,7 +90,10 @@ class _StationListWidgetState extends State<StationListWidget> {
                       decoration: InputDecoration(
                         hintText: "Cari Balai...",
                         hintStyle: TextStyle(color: Colors.grey[600]),
-                        prefixIcon: const Icon(Icons.search, color: Colors.black54),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.black54,
+                        ),
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -113,16 +122,22 @@ class _StationListWidgetState extends State<StationListWidget> {
                         return InkWell(
                           onTap: () {
                             final firstStation = stations.first;
-                            Get.toNamed(AppRoute.stations, arguments: {
-                              'lat': firstStation.latitude,
-                              'lng': firstStation.longitude,
-                              'balaiName': balaiName,
-                            });
+                            Get.toNamed(
+                              AppRoute.stations,
+                              arguments: {
+                                'lat': firstStation.latitude,
+                                'lng': firstStation.longitude,
+                                'balaiName': balaiName,
+                              },
+                            );
                           },
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.blueAccent, width: 2),
+                              border: Border.all(
+                                color: Colors.blueAccent,
+                                width: 2,
+                              ),
                               color: Colors.white,
                             ),
                             margin: const EdgeInsets.only(bottom: 12),
@@ -142,11 +157,21 @@ class _StationListWidgetState extends State<StationListWidget> {
                                 ),
                                 const SizedBox(height: 8),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    _buildInfoItem(Icons.wifi, ctrl.countStation.online ?? 0),
-                                    _buildInfoItem(Icons.wifi_off, ctrl.countStation.offline ?? 0),
-                                    _buildInfoItem(Icons.devices, stations.length),
+                                    _buildInfoItem(
+                                      Icons.wifi,
+                                      ctrl.countStation.online ?? 0,
+                                    ),
+                                    _buildInfoItem(
+                                      Icons.wifi_off,
+                                      ctrl.countStation.offline ?? 0,
+                                    ),
+                                    _buildInfoItem(
+                                      Icons.devices,
+                                      stations.length,
+                                    ),
                                   ],
                                 ),
                               ],
@@ -173,7 +198,11 @@ class _StationListWidgetState extends State<StationListWidget> {
         const SizedBox(width: 4),
         Text(
           '$count',
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
       ],
     );

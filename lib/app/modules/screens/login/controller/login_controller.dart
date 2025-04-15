@@ -16,14 +16,26 @@ class LoginController extends GetxController {
     String password = passwordController.text.trim();
 
     if (username == "admin" && password == "123") {
-      Get.snackbar("Success", "Login berhasil!",
-          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
+      Get.snackbar(
+        "Success",
+        "Login berhasil!",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
       Future.delayed(Duration(seconds: 1), () {
-        Get.offNamed(AppRoute.home); // Navigasi ke halaman home setelah login sukses
+        Get.offNamed(
+          AppRoute.home,
+        ); // Navigasi ke halaman home setelah login sukses
       });
     } else {
-      Get.snackbar("Error", "Username atau password salah!",
-          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar(
+        "Error",
+        "Username atau password salah!",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 }

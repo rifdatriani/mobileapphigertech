@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobileapphigertech/app/modules/home/model/count_station_model.dart';
@@ -65,9 +64,8 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     }
 
     update(); // untuk GetBuilder
-  updateMarkers();
+    updateMarkers();
   }
-
 
   // Fungsi pencarian balai
   void searchBalai(String query) {
@@ -85,10 +83,13 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     }
   }
 
-    /* Contoh cara menampilkan Marker */
+  /* Contoh cara menampilkan Marker */
 
   void updateMarkers() {
-    final filtered = (filteredType == null || filteredType!.isEmpty) ? allLocations : allLocations.where((e) => e.type == filteredType).toList();
+    final filtered =
+        (filteredType == null || filteredType!.isEmpty)
+            ? allLocations
+            : allLocations.where((e) => e.type == filteredType).toList();
 
     markers =
         filtered
@@ -122,7 +123,9 @@ class HomeController extends GetxController with StateMixin<dynamic> {
       case 'ARR':
         return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
       case 'AWS':
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+        return BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueOrange,
+        );
       default:
         return BitmapDescriptor.defaultMarker; // merah
     }

@@ -197,12 +197,14 @@ class StationModel {
     password: json['password'],
     warningStatus: json['warningStatus'],
     waterLevel: json['waterLevel'],
-    awlrLastReading: json['awlrLastReading'] != null
-      ? AwlrlastModel.fromJson(json['awlrLastReading'])
-      : null,
-  arrLastReading: json['arrLastReading'] != null
-      ? ArrlastModel.fromJson(json['arrLastReading'])
-      : null,
+    awlrLastReading:
+        json['awlrLastReading'] != null
+            ? AwlrlastModel.fromJson(json['awlrLastReading'])
+            : null,
+    arrLastReading:
+        json['arrLastReading'] != null
+            ? ArrlastModel.fromJson(json['arrLastReading'])
+            : null,
     rainfall: json['rainfall'],
     rainfallLastHour: json['rainfallLastHour'],
     rainfallLastDay: json['rainfallLastDay'],
@@ -234,7 +236,12 @@ class ArrlastModel {
   String? intensity;
   String? deviceStatus;
 
-  ArrlastModel({this.deviceId, this.rainfall, this.intensity, this.deviceStatus});
+  ArrlastModel({
+    this.deviceId,
+    this.rainfall,
+    this.intensity,
+    this.deviceStatus,
+  });
 
   ArrlastModel.fromJson(Map<String, dynamic> json) {
     deviceId = json['deviceId'];

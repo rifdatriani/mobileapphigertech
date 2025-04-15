@@ -27,20 +27,23 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         final settingsController = Get.find<SettingsController>();
 
-        return Obx(() => GetMaterialApp(
-              title: 'Aplikasi Mobile Higertech',
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-                textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
-              ),
-              darkTheme: ThemeData.dark(),
-              themeMode: settingsController.isDarkMode.value
-                  ? ThemeMode.dark
-                  : ThemeMode.light,
-              initialRoute: AppRoute.splash,
-              getPages: AppPage.pages,
-            ));
+        return Obx(
+          () => GetMaterialApp(
+            title: 'Aplikasi Mobile Higertech',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+              textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
+            ),
+            darkTheme: ThemeData.dark(),
+            themeMode:
+                settingsController.isDarkMode.value
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+            initialRoute: AppRoute.splash,
+            getPages: AppPage.pages,
+          ),
+        );
       },
     );
   }

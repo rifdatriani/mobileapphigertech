@@ -4,7 +4,7 @@ class MapMarkerModel {
   final double latitude;
   final double longitude;
   final String status;
-  final String type; 
+  final String type;
   final String? deviceId;
   final String? note;
   final DateTime? createdAt;
@@ -22,7 +22,7 @@ class MapMarkerModel {
     required this.latitude,
     required this.longitude,
     required this.status,
-    required this.type, 
+    required this.type,
     this.deviceId,
     this.note,
     this.createdAt,
@@ -45,9 +45,15 @@ class MapMarkerModel {
       type: json['type'] ?? 'Unknown',
       deviceId: json['deviceId'],
       note: json['note'],
-      createdAt: json['createdAt'] != null ? DateTime.tryParse(json['createdAt']) : null,
+      createdAt:
+          json['createdAt'] != null
+              ? DateTime.tryParse(json['createdAt'])
+              : null,
       createdBy: json['createdBy'],
-      updatedAt: json['updatedAt'] != null ? DateTime.tryParse(json['updatedAt']) : null,
+      updatedAt:
+          json['updatedAt'] != null
+              ? DateTime.tryParse(json['updatedAt'])
+              : null,
       updatedBy: json['updatedBy'],
       timeZone: json['timeZone'],
       slug: json['slug'],

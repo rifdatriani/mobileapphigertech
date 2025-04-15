@@ -12,7 +12,8 @@ class ApiService extends GetConnect {
     httpClient.defaultContentType = 'application/json';
 
     httpClient.addRequestModifier<dynamic>((request) {
-      final auth = 'Basic ${base64Encode(utf8.encode('$_username:$_password'))}';
+      final auth =
+          'Basic ${base64Encode(utf8.encode('$_username:$_password'))}';
       request.headers['Authorization'] = auth;
       return request;
     });
@@ -69,11 +70,7 @@ class ApiResponse {
   final String message;
   final dynamic data;
 
-  ApiResponse({
-    required this.code,
-    required this.message,
-    this.data,
-  });
+  ApiResponse({required this.code, required this.message, this.data});
 
   bool get isSuccess => code == 200;
 }

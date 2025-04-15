@@ -10,7 +10,7 @@ class StationOverviewGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width > 600;
-    
+
     return GetBuilder<HomeController>(
       builder: (ctrl) {
         if (ctrl.status.isLoading) {
@@ -27,21 +27,37 @@ class StationOverviewGrid extends StatelessWidget {
 
         CountStationModel data = ctrl.countStation;
         List<Map<String, dynamic>> items = [
-          {"title": "Total Pos", "value": data.totalStation, "color": Colors.blue},
+          {
+            "title": "Total Pos",
+            "value": data.totalStation,
+            "color": Colors.blue,
+          },
           {"title": "Online", "value": data.online, "color": Colors.green},
           {"title": "Offline", "value": data.offline, "color": Colors.red},
-          {"title": "Instansi", "value": data.totalOrganization, "color": Colors.orange},
+          {
+            "title": "Instansi",
+            "value": data.totalOrganization,
+            "color": Colors.orange,
+          },
           {"title": "Duga Air", "value": data.totalAwlr, "color": Colors.teal},
-          {"title": "Curah Hujan", "value": data.totalArr, "color": Colors.purple},
-          {"title": "Klimatologi", "value": data.totalAws, "color": Colors.brown},
+          {
+            "title": "Curah Hujan",
+            "value": data.totalArr,
+            "color": Colors.purple,
+          },
+          {
+            "title": "Klimatologi",
+            "value": data.totalAws,
+            "color": Colors.brown,
+          },
         ];
 
         // Calculate optimal grid layout based on screen size
         int crossAxisCount = isTablet ? 4 : 3;
-        
+
         // Top row items (always show first 3 or 4 items in a row)
         int topRowCount = isTablet ? 3 : 4;
-        
+
         return Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -66,7 +82,7 @@ class StationOverviewGrid extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Remaining items
               if (items.length > topRowCount)
                 Padding(
@@ -80,7 +96,8 @@ class StationOverviewGrid extends StatelessWidget {
                     crossAxisSpacing: size.width * 0.01,
                     children: List.generate(
                       items.length - topRowCount,
-                      (index) => _buildGridItem(items[index + topRowCount], context),
+                      (index) =>
+                          _buildGridItem(items[index + topRowCount], context),
                     ),
                   ),
                 ),
@@ -90,7 +107,7 @@ class StationOverviewGrid extends StatelessWidget {
       },
     );
   }
-  
+
   Widget _buildGridItem(Map<String, dynamic> item, BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
