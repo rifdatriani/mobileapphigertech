@@ -30,6 +30,7 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     try {
       final data = await _repository.fetchStationList();
 
+      allLocations.clear();
       data.where((s) => s.latitude != null && s.longitude != null).forEach((s) {
         allLocations.add(
           MarkerModel(
@@ -39,6 +40,7 @@ class HomeController extends GetxController with StateMixin<dynamic> {
           ),
         );
       });
+      
       stations.clear();
       stations.addAll(data);
       filteredStations.assignAll(data); // Inisialisasi dengan semua data
