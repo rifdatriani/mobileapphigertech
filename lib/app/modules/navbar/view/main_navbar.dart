@@ -70,7 +70,7 @@ class MainNavbar extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Beranda"),
             BottomNavigationBarItem(icon: Icon(Icons.list), label: "Instansi"),
-            BottomNavigationBarItem(icon: Icon(Icons.map), label: "Peta"),
+            BottomNavigationBarItem(icon: Icon(Icons.map), label: "Map"),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
               label: "Pengaturan",

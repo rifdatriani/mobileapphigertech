@@ -15,8 +15,9 @@ class MapController {
   Set<Marker> get markers => _markers;
 
   Future<void> initialize() async {
-    final iconAWLR = await MarkerIconLoader.load('assets/duga.png');
-    final iconARR = await MarkerIconLoader.load('assets/awan.png');
+    // Load ikon terlebih dahulu
+    final iconAWLR = await MarkerIconLoader.loadSimple('assets/duga.png');
+    final iconARR = await MarkerIconLoader.loadSimple('assets/awan.png');
 
     try {
       final stations = await _repository.fetchDeviceMarkers();
@@ -25,27 +26,28 @@ class MapController {
         final stationType = (station.type ?? '').toUpperCase();
         final isOnline = station.status.toLowerCase() == 'online';
 
-        // Memilih ikon berdasarkan tipe stasiun dan status online/offline
-        final BitmapDescriptor icon = _getMarkerIcon(stationType, isOnline, iconAWLR, iconARR);
+        final icon = _getMarkerIcon(stationType, isOnline, iconAWLR, iconARR);
 
         _markers.add(
           Marker(
             markerId: MarkerId(station.id),
             position: LatLng(station.latitude, station.longitude),
             icon: icon,
-            infoWindow: InfoWindow(title: station.name.isNotEmpty ? station.name : 'Unnamed Station'),
+            infoWindow: InfoWindow(
+              title: station.name.isNotEmpty ? station.name : 'Unnamed Station',
+            ),
           ),
         );
       }
 
       _isLoading = false;
+      debugPrint('Markers initialized: ${_markers.length}');
     } catch (e) {
       debugPrint('Failed to fetch markers: $e');
       _isLoading = false;
     }
   }
 
-  // Fungsi untuk memilih ikon berdasarkan tipe stasiun dan status online/offline
   BitmapDescriptor _getMarkerIcon(String stationType, bool isOnline, BitmapDescriptor iconAWLR, BitmapDescriptor iconARR) {
     if (stationType == 'AWLR') {
       return iconAWLR;
@@ -70,7 +72,6 @@ class MapController {
     _mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
   }
 
-  // Membuat LatLngBounds secara manual
   LatLngBounds _createLatLngBounds(List<LatLng> positions) {
     double south = positions.first.latitude;
     double north = positions.first.latitude;
