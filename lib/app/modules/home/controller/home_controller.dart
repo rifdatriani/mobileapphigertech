@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobileapphigertech/app/modules/home/model/count_station_model.dart';
@@ -9,21 +10,48 @@ class HomeController extends GetxController with StateMixin<dynamic> {
   final HomeRepository _repository = HomeRepository();
   final List<StationModel> stations = [];
   final CountStationModel countStation = CountStationModel();
-  final RxList<StationModel> filteredStations =
-      <StationModel>[].obs; // Tambahkan ini
-  final RxString searchQuery = ''.obs; // Query pencarian
+  final RxList<StationModel> filteredStations = <StationModel>[].obs;
+  final RxString searchQuery = ''.obs;
 
   final List<MarkerModel> allLocations = [];
   List<Marker> markers = [];
   String? filteredType;
 
+  // Simpan icon agar tidak load berulang
+  late BitmapDescriptor iconAWLR;
+  late BitmapDescriptor iconARR;
+  late BitmapDescriptor iconAWS;
+  late BitmapDescriptor iconKlimatologi;
+
   @override
   void onInit() {
     super.onInit();
-    fetchStations();
+    initialize();
   }
 
-  void fetchStations() async {
+  Future<void> initialize() async {
+    // Load semua ikon hanya sekali
+    iconAWLR = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(12, 12)),
+      'assets/duga.png',
+    );
+    iconARR = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(12, 12)),
+      'assets/curah.png',
+    );
+    iconAWS = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(12, 12)),
+      'assets/pda.png',
+    );
+    iconKlimatologi = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(5, 5)),
+      'assets/klima.png',
+    );
+
+    await fetchStations();
+  }
+
+  Future<void> fetchStations() async {
     change(null, status: RxStatus.loading());
 
     try {
@@ -39,20 +67,16 @@ class HomeController extends GetxController with StateMixin<dynamic> {
           ),
         );
       });
-      
+
       stations.clear();
       stations.addAll(data);
-      filteredStations.assignAll(data); // Inisialisasi dengan semua data
+      filteredStations.assignAll(data);
 
       countStation.totalStation = data.length;
       countStation.totalOrganization =
           data.map((s) => s.organizationCode).toSet().length;
-
-      // Hitung total online & offline berdasarkan status station
       countStation.online = data.where((s) => s.status == 'online').length;
       countStation.offline = data.where((s) => s.status == 'offline').length;
-
-      // Hitung jumlah berdasarkan tipe pos
       countStation.totalAwlr = data.where((s) => s.type == 'AWLR').length;
       countStation.totalArr = data.where((s) => s.type == 'ARR').length;
       countStation.totalAws = data.where((s) => s.type == 'AWS').length;
@@ -65,11 +89,10 @@ class HomeController extends GetxController with StateMixin<dynamic> {
       change(null, status: RxStatus.error(e.toString()));
     }
 
-    update(); // untuk GetBuilder
-    updateMarkers();
+    update();
+    await updateMarkers();
   }
 
-  // Fungsi pencarian balai
   void searchBalai(String query) {
     searchQuery.value = query;
     if (query.isEmpty) {
@@ -85,26 +108,26 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     }
   }
 
-  /* Contoh cara menampilkan Marker */
+  Future<void> updateMarkers() async {
+    final filtered = (filteredType == null || filteredType!.isEmpty)
+        ? allLocations
+        : allLocations.where((e) => e.type == filteredType).toList();
 
-  void updateMarkers() {
-    final filtered =
-        (filteredType == null || filteredType!.isEmpty)
-            ? allLocations
-            : allLocations.where((e) => e.type == filteredType).toList();
+    List<Marker> tempMarkers = [];
 
-    markers =
-        filtered
-            .map(
-              (loc) => Marker(
-                markerId: MarkerId('${loc.latitude},${loc.longitude}'),
-                position: LatLng(loc.latitude, loc.longitude),
-                icon: getMarkerColor(loc.type), // ← custom warna
-                infoWindow: InfoWindow(title: loc.type),
-              ),
-            )
-            .toList();
+    for (var loc in filtered) {
+      final icon = _getMarkerIcon(loc.type);
+      tempMarkers.add(
+        Marker(
+          markerId: MarkerId('${loc.latitude},${loc.longitude}'),
+          position: LatLng(loc.latitude, loc.longitude),
+          icon: icon,
+          infoWindow: InfoWindow(title: loc.type),
+        ),
+      );
+    }
 
+    markers = tempMarkers;
     update();
   }
 
@@ -118,18 +141,16 @@ class HomeController extends GetxController with StateMixin<dynamic> {
     updateMarkers();
   }
 
-  BitmapDescriptor getMarkerColor(String type) {
+  BitmapDescriptor _getMarkerIcon(String type) {
     switch (type.toUpperCase()) {
       case 'AWLR':
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+        return iconAWLR;
       case 'ARR':
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+        return iconARR;
       case 'AWS':
-        return BitmapDescriptor.defaultMarkerWithHue(
-          BitmapDescriptor.hueOrange,
-        );
+        return iconAWS;
       default:
-        return BitmapDescriptor.defaultMarker; // merah
+        return iconKlimatologi;
     }
   }
 }

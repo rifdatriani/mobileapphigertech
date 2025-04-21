@@ -41,25 +41,42 @@ class _StationMapWidgetState extends State<StationMapWidget> {
   }
 
   Widget _buildLegendCard() {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.95),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300, width: 1),
-        boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 8),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _legendItem('assets/duga.png', 'Pos Duga Air (PDA/AWLR)'),
-          const SizedBox(height: 6),
-          _legendItem('assets/awan.png', 'Pos Curah Hujan (PCH/ARR)'),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.95),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade300, width: 1),
+            boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 8)],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _legendItem('assets/duga.png', 'Pos Duga Air (PDA/AWLR)'),
+              const SizedBox(height: 6),
+              _legendItem('assets/curah.png', 'Pos Curah Hujan (PCH/ARR)'),
+              const SizedBox(height: 6),
+              _legendItem('assets/pda.png', 'Pos PDA & PCH'),
+              const SizedBox(height: 6),
+              _legendItem('assets/klima.png', 'Pos Klimatologi (AWS)'),
+            ],
+          ),
+        ),
+
+        // Segitiga ke bawah
+        Transform.translate(
+          offset: const Offset(20, 0),
+          child: CustomPaint(
+            size: const Size(20, 10),
+            painter: _DownTrianglePainter(),
+          ),
+        ),
+      ],
     );
   }
 
@@ -121,7 +138,7 @@ class _StationMapWidgetState extends State<StationMapWidget> {
                 });
               }
             },
-            child: CircleAvatar(
+            child: const CircleAvatar(
               radius: 18,
               backgroundColor: Colors.white,
               child: Icon(Icons.info_outline, size: 20, color: Colors.black),
@@ -129,7 +146,7 @@ class _StationMapWidgetState extends State<StationMapWidget> {
           ),
         ),
 
-        // Legend card (di atas tombol info)
+        // Legend card (pojok kiri bawah agak naik)
         Positioned(
           left: 16,
           bottom: 80,
@@ -154,4 +171,30 @@ class _StationMapWidgetState extends State<StationMapWidget> {
 
     return SizedBox.expand(child: mapWithLegend);
   }
+}
+
+// Custom painter untuk segitiga mengarah ke bawah
+class _DownTrianglePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.white;
+
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width / 2, size.height)
+      ..lineTo(size.width, 0)
+      ..close();
+
+    canvas.drawPath(path, paint);
+
+    // Garis tepi segitiga
+    final borderPaint = Paint()
+      ..color = Colors.grey.shade300
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+    canvas.drawPath(path, borderPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
