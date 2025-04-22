@@ -123,11 +123,11 @@ void updateStationTypesForBalai() {
 }
 
   const Map<String, String> stationTypeLabels = {
-    'AWLR': 'Pos Curah Hujan',
     'PDA': 'Pos Duga Air',
-    'ARR': 'Pos Duga Air',
+    'AWLR': 'Pos Duga AIr',
     'PCH': 'Pos Curah Hujan',
+    'ARR': 'Pos Curah Hujan',
     'AWS': 'Pos Klimatologi',
-    // 'PDA PCH': 'PDA & PCH',
+    'AWLR_ARR': 'Pos Duga Air & Curah Hujan',
     
   };

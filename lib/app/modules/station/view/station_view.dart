@@ -4,7 +4,10 @@ import 'package:get/get.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/controller/logout_controller.dart';
 import 'package:mobileapphigertech/app/modules/screens/logout/view/logout_view.dart';
 import 'package:mobileapphigertech/app/modules/station/controller/station_controller.dart';
-import 'package:mobileapphigertech/app/modules/station/view/detail/detail_view.dart';
+import 'package:mobileapphigertech/app/modules/station/view/detail/curah_hujan.dart';
+import 'package:mobileapphigertech/app/modules/station/view/detail/duga_air.dart';
+import 'package:mobileapphigertech/app/modules/station/view/detail/duga_and_curah.dart';
+import 'package:mobileapphigertech/app/modules/station/view/detail/klimatologi.dart';
 import 'package:mobileapphigertech/app/modules/station/view/map/map_station.dart';
 
 class StationView extends GetView<StationController> {
@@ -14,7 +17,7 @@ class StationView extends GetView<StationController> {
   Widget build(BuildContext context) {
     final args = Get.arguments as Map<String, dynamic>?;
 
-        final String balai = args?['balaiName'] ?? 'Station';
+    final String balai = args?['balaiName'] ?? 'Station';
     final double latitude = args?['lat'] ?? -2.5489;
     final double longitude = args?['lng'] ?? 118.0149;
 
@@ -89,32 +92,47 @@ class StationView extends GetView<StationController> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(controller.stationTypes.length, (index) {
-                          final isSelected = controller.selectedIndex == index;
-                          final tabName = stationTypeLabels[controller.stationTypes[index]] ?? controller.stationTypes[index];
-                          return Expanded(
-                            child: GestureDetector(
-                              onTap: () => controller.changeTab(index),
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 4),
-                                height: 40,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: isSelected ? Colors.blue : Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.grey.shade300),
-                                ),
-                                child: Text(
-                                  tabName,
-                                  style: TextStyle(
-                                    color: isSelected ? Colors.white : Colors.black,
-                                    fontWeight: FontWeight.bold,
+                        children: List.generate(
+                          controller.stationTypes.length,
+                          (index) {
+                            final isSelected =
+                                controller.selectedIndex == index;
+                            final tabName =
+                                stationTypeLabels[controller
+                                    .stationTypes[index]] ??
+                                controller.stationTypes[index];
+                            return Expanded(
+                              child: GestureDetector(
+                                onTap: () => controller.changeTab(index),
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                  ),
+                                  height: 40,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        isSelected ? Colors.blue : Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    tabName,
+                                    style: TextStyle(
+                                      color:
+                                          isSelected
+                                              ? Colors.white
+                                              : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 2),
 
@@ -123,7 +141,23 @@ class StationView extends GetView<StationController> {
                           itemCount: controller.filteredStations.length,
                           itemBuilder: (context, index) {
                             final station = controller.filteredStations[index];
-                            return StationCard(station: station);
+                            
+                            switch (station.stationType) {
+                              case 'AWLR':
+                                return CurahHujanCard(station: station);
+                              case 'PCH':
+                                return CurahHujanCard(station: station);
+                              case 'PDA':
+                                return DugaAirCard(station: station);
+                              case 'ARR':
+                                return DugaAirCard(station: station);
+                              case 'AWS':
+                                return KlimatologiCard(station: station);
+                              case 'AWLR_ARR':
+                                return DugaCurahCard(station: station);
+                              default:
+                                return const SizedBox();
+                            }
                           },
                         ),
                       ),
@@ -138,24 +172,3 @@ class StationView extends GetView<StationController> {
     );
   }
 }
-
-// Expanded(
-//   child: ListView.builder(
-//     itemCount: controller.filteredStations.length,
-//     itemBuilder: (context, index) {
-//       final station = controller.filteredStations[index];
-//       return ListTile(
-//         contentPadding: EdgeInsets.symmetric(
-//             vertical: 0.h, horizontal: 12.h),
-//         title: Text(
-//           station.name,
-//           style: const TextStyle(color: Colors.black87),
-//         ),
-//         subtitle: Text(
-//           station.stationType,
-//           style: const TextStyle(color: Colors.black54),
-//         ),
-//       );
-//     },
-//   ),
-// ),
