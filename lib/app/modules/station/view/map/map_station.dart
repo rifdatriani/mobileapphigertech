@@ -41,7 +41,7 @@ class _StationMapState extends State<StationMap> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: GoogleMap(
-        mapType: MapType.satellite, // Tambahkan ini
+        mapType: MapType.hybrid, // Tambahkan ini
         initialCameraPosition: CameraPosition(
           target: _targetPosition ?? const LatLng(-2.5489, 118.0149),
           zoom: 4,
@@ -49,16 +49,7 @@ class _StationMapState extends State<StationMap> {
         zoomControlsEnabled: true,
         myLocationEnabled: false,
         onMapCreated: _onMapCreated,
-        markers:
-            _targetPosition != null
-                ? {
-                  Marker(
-                    markerId: const MarkerId('selectedStation'),
-                    position: _targetPosition!,
-                    infoWindow: const InfoWindow(title: 'Stasiun Terpilih'),
-                  ),
-                }
-                : {},
+        
       ),
     );
   }
