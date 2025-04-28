@@ -10,6 +10,7 @@ class HomeRepository {
     ); // pastikan endpoint-nya benar
 
     if (response.isSuccess && response.data is List) {
+      print('Response station data: ${response.data}');
       return (response.data as List)
           .map((json) => StationModel.fromJson(json))
           .toList();

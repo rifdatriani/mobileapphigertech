@@ -64,6 +64,7 @@ class HomeController extends GetxController with StateMixin<dynamic> {
             latitude: double.tryParse(s.latitude.toString()) ?? 0,
             longitude: double.tryParse(s.longitude.toString()) ?? 0,
             type: s.stationType?.toString() ?? 'Unknown',
+            deviceStatus: s.deviceStatus,
           ),
         );
       });
@@ -75,11 +76,13 @@ class HomeController extends GetxController with StateMixin<dynamic> {
       countStation.totalStation = data.length;
       countStation.totalOrganization =
           data.map((s) => s.organizationCode).toSet().length;
-      countStation.online = data.where((s) => s.status == 'online').length;
-      countStation.offline = data.where((s) => s.status == 'offline').length;
-      countStation.totalAwlr = data.where((s) => s.type == 'AWLR').length;
-      countStation.totalArr = data.where((s) => s.type == 'ARR').length;
-      countStation.totalAws = data.where((s) => s.type == 'AWS').length;
+      countStation.online = data.where((s) => (s.deviceStatus?.toLowerCase() ?? '') == 'online').length;
+      countStation.offline = data.where((s) => (s.deviceStatus?.toLowerCase() ?? '') == 'offline').length;
+
+      countStation.totalAwlr = data.where((s) => s.stationType == 'AWLR').length;
+      countStation.totalArr = data.where((s) => s.stationType == 'ARR').length;
+      countStation.totalAws = data.where((s) => s.stationType == 'AWS').length;
+
 
       change(
         null,
@@ -122,7 +125,12 @@ class HomeController extends GetxController with StateMixin<dynamic> {
           markerId: MarkerId('${loc.latitude},${loc.longitude}'),
           position: LatLng(loc.latitude, loc.longitude),
           icon: icon,
-          infoWindow: InfoWindow(title: loc.type),
+          infoWindow: InfoWindow(
+            title: loc.type,
+             snippet: (loc.deviceStatus != null && loc.deviceStatus!.isNotEmpty)
+                ? 'Status: ${loc.deviceStatus}'
+                : 'Status: Unknown',
+          ),
         ),
       );
     }

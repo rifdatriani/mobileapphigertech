@@ -11,101 +11,121 @@ class StationOverviewGrid extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width > 600;
 
-    return GetBuilder<HomeController>(
-      builder: (ctrl) {
-        if (ctrl.status.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return GetBuilder<HomeController>(builder: (ctrl) {
+      if (ctrl.status.isLoading) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-        if (ctrl.status.isError) {
-          return Center(child: Text('Error: ${ctrl.status.errorMessage}'));
-        }
+      if (ctrl.status.isError) {
+        return Center(child: Text('Error: ${ctrl.status.errorMessage}'));
+      }
 
-        if (ctrl.status.isEmpty) {
-          return const Center(child: Text('No stations found'));
-        }
+      if (ctrl.status.isEmpty) {
+        return const Center(child: Text('No stations found'));
+      }
 
-        CountStationModel data = ctrl.countStation;
-        List<Map<String, dynamic>> items = [
-          {
-            "title": "Total Pos",
-            "value": data.totalStation,
-            "color": Colors.blue,
-          },
-          {"title": "Online", "value": data.online, "color": Colors.green},
-          {"title": "Offline", "value": data.offline, "color": Colors.red},
-          {
-            "title": "Instansi",
-            "value": data.totalOrganization,
-            "color": Colors.orange,
-          },
-          {"title": "Duga Air", "value": data.totalAwlr, "color": Colors.teal},
-          {
-            "title": "Curah Hujan",
-            "value": data.totalArr,
-            "color": Colors.purple,
-          },
-          {
-            "title": "Klimatologi",
-            "value": data.totalAws,
-            "color": Colors.brown,
-          },
-        ];
+      CountStationModel data = ctrl.countStation;
+      List<Map<String, dynamic>> items = [
+        {
+          "title": "Total Pos",
+          "value": data.totalStation,
+          "color": Colors.blue,
+        },
+        {
+          "title": "Online",
+          "value": data.online,
+          "color": Colors.green,
+        },
+        {
+          "title": "Offline",
+          "value": data.offline,
+          "color": Colors.red,
+        },
+        {
+          "title": "Instansi",
+          "value": data.totalOrganization,
+          "color": Colors.orange,
+        },
+        {
+          "title": "Duga Air",
+          "value": data.totalAwlr,
+          "color": Colors.teal,
+        },
+        {
+          "title": "Curah Hujan",
+          "value": data.totalArr,
+          "color": Colors.purple,
+        },
+        {
+          "title": "Klimatologi",
+          "value": data.totalAws,
+          "color": Colors.brown,
+        },
+      ];
 
-        // Calculate optimal grid layout based on screen size
-        int crossAxisCount = isTablet ? 4 : 3;
+      print('DATA STATION:');
+      print('Total Pos: ${data.totalStation}');
+      print('Online: ${data.online}');
+      print('Offline: ${data.offline}');
+      print('Instansi: ${data.totalOrganization}');
+      print('Duga Air: ${data.totalAwlr}');
+      print('Curah Hujan: ${data.totalArr}');
+      print('Klimatologi: ${data.totalAws}');
 
-        // Top row items (always show first 3 or 4 items in a row)
-        int topRowCount = isTablet ? 3 : 4;
 
-        return Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            children: [
-              // Top row - always show 3 or 4 items
-              Padding(
-                padding: EdgeInsets.all(size.width * 0.02),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: List.generate(
-                    topRowCount,
-                    (index) => Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(size.width * 0.005),
-                        child: _buildGridItem(items[index], context),
-                      ),
+      // Calculate optimal grid layout based on screen size
+      int crossAxisCount = isTablet ? 4 : 3;
+
+      // Top row items (always show first 3 or 4 items in a row)
+      int topRowCount = isTablet ? 3 : 4;
+
+      return Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            // Top row - always show 3 or 4 items
+            Padding(
+              padding: EdgeInsets.all(size.width * 0.02),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(
+                  topRowCount,
+                  (index) => Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(size.width * 0.005),
+                      child: _buildGridItem(items[index], context),
                     ),
                   ),
                 ),
               ),
+            ),
 
-              // Remaining items
-              if (items.length > topRowCount)
-                Padding(
-                  padding: EdgeInsets.all(size.width * 0.02),
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: crossAxisCount,
-                    childAspectRatio: 1.2,
-                    mainAxisSpacing: size.width * 0.01,
-                    crossAxisSpacing: size.width * 0.01,
-                    children: List.generate(
-                      items.length - topRowCount,
-                      (index) =>
-                          _buildGridItem(items[index + topRowCount], context),
-                    ),
+            // Remaining items
+            if (items.length > topRowCount)
+              Padding(
+                padding: EdgeInsets.all(size.width * 0.02),
+                child: GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: crossAxisCount,
+                  childAspectRatio: 1.2,
+                  mainAxisSpacing: size.width * 0.01,
+                  crossAxisSpacing: size.width * 0.01,
+                  children: List.generate(
+                    items.length - topRowCount,
+                    (index) =>
+                        _buildGridItem(items[index + topRowCount], context),
                   ),
                 ),
-            ],
-          ),
-        );
-      },
-    );
+              ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildGridItem(Map<String, dynamic> item, BuildContext context) {
