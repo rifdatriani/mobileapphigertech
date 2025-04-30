@@ -9,23 +9,17 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController controller = Get.put(LoginController());
 
-    // Mendapatkan ukuran layar
     final size = MediaQuery.of(context).size;
     final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
-          onTap:
-              () =>
-                  FocusScope.of(
-                    context,
-                  ).unfocus(), // Menutup keyboard saat tap di luar
+          onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight:
-                    size.height -
+                minHeight: size.height -
                     MediaQuery.of(context).viewInsets.bottom -
                     MediaQuery.of(context).padding.top,
               ),
@@ -33,16 +27,12 @@ class LoginView extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment:
-                      isKeyboardOpen
-                          ? MainAxisAlignment.start
-                          : MainAxisAlignment.center,
+                      isKeyboardOpen ? MainAxisAlignment.start : MainAxisAlignment.center,
                   children: [
                     if (!isKeyboardOpen || size.height > 600) ...[
                       Image.asset(
                         'assets/hgt.png',
-                        width:
-                            size.width *
-                            0.25, // Responsif berdasarkan lebar layar
+                        width: size.width * 0.25,
                         height: size.width * 0.25,
                         fit: BoxFit.contain,
                       ),
@@ -135,6 +125,47 @@ class LoginView extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey),
                     ),
+                    const SizedBox(height: 8),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text(
+                              "Informasi Versi 1.0.0",
+                              style: TextStyle(color: Colors.black), // judul hitam
+                            ),
+                            content: const Text(
+                              "Fitur yang tersedia di versi 1.0.0:\n\n"
+                              "• Fitur Login\n"
+                              "• Dashboard Awal\n"
+                              "• Peta Lokasi Stasiun\n"
+                              "• Halaman Pengaturan",
+                              style: TextStyle(color: Colors.black), // isi hitam
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text(
+                                  "Tutup",
+                                  style: TextStyle(color: Colors.black), // tombol hitam
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Versi 1.0.0",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+
                   ],
                 ),
               ),
