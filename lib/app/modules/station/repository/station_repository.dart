@@ -7,7 +7,7 @@ class StationRepository {
   Future<List<StationModel>> fetchStationList() async {
     final response = await _apiService.getRequest(
       'station/All',
-    ); // pastikan endpoint-nya benar
+    ); 
 
     if (response.isSuccess && response.data is List) {
       return (response.data as List)

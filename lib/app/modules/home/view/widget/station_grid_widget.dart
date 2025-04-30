@@ -72,11 +72,8 @@ class StationOverviewGrid extends StatelessWidget {
       print('Curah Hujan: ${data.totalArr}');
       print('Klimatologi: ${data.totalAws}');
 
-
-      // Calculate optimal grid layout based on screen size
       int crossAxisCount = isTablet ? 4 : 3;
 
-      // Top row items (always show first 3 or 4 items in a row)
       int topRowCount = isTablet ? 3 : 4;
 
       return Container(
@@ -87,7 +84,7 @@ class StationOverviewGrid extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Top row - always show 3 or 4 items
+
             Padding(
               padding: EdgeInsets.all(size.width * 0.02),
               child: Row(
@@ -104,7 +101,6 @@ class StationOverviewGrid extends StatelessWidget {
               ),
             ),
 
-            // Remaining items
             if (items.length > topRowCount)
               Padding(
                 padding: EdgeInsets.all(size.width * 0.02),

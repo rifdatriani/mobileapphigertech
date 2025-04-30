@@ -4,7 +4,6 @@ import 'package:mobileapphigertech/app/modules/home/controller/home_controller.d
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_grid_widget.dart';
 import 'package:mobileapphigertech/app/modules/home/view/widget/station_list_widget.dart';
 import 'package:mobileapphigertech/app/modules/map/widget/station_map_widget.dart';
-// import 'package:mobileapphigertech/app/modules/home/view/widget/station_map_widget.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
@@ -21,17 +20,17 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        toolbarHeight: size.height * 0.07, // Ukuran AppBar responsif
+        toolbarHeight: size.height * 0.07, 
         title: Image.asset(
           'assets/higertech.png',
-          height: size.height * 0.04, // Logo responsif
+          height: size.height * 0.04, 
           fit: BoxFit.contain,
         ),
         centerTitle: false,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          // Refresh data - bisa disambungkan ke controller
+          
           return await Future.delayed(const Duration(seconds: 1));
         },
         child: SafeArea(
@@ -44,7 +43,6 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  // Layout untuk tablet (layar lebar)
   Widget _buildTabletLayout(BuildContext context, Size size) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -53,13 +51,13 @@ class HomeView extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Baris atas dengan Map dan Grid
+    
           SizedBox(
             height: size.height * 0.35,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Map Section
+              
                 Expanded(
                   flex: 3,
                   child: ClipRRect(
@@ -72,7 +70,7 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: size.width * 0.02),
-                // Station Overview Grid
+               
                 const Expanded(flex: 2, child: StationOverviewGrid()),
               ],
             ),
@@ -80,14 +78,12 @@ class HomeView extends StatelessWidget {
 
           SizedBox(height: size.height * 0.02),
 
-          // List stasiun
           Expanded(child: StationListWidget(showSearch: false)),
         ],
       ),
     );
   }
 
-  // Layout untuk mobile (layar kecil)
   Widget _buildMobileLayout(BuildContext context, Size size) {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -105,12 +101,12 @@ class HomeView extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Map Section
+        
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: SizedBox(
                   height:
-                      size.height * 0.25, // Responsif berdasarkan tinggi layar
+                      size.height * 0.25,
                   width: double.infinity,
                   child: GetBuilder<HomeController>(
                     builder: (controller) {
@@ -125,14 +121,13 @@ class HomeView extends StatelessWidget {
 
               SizedBox(height: size.height * 0.015),
 
-              // Station Overview Grid
               const StationOverviewGrid(),
 
               SizedBox(height: size.height * 0.015),
 
-              // List stasiun dengan tinggi tetap
+          
               SizedBox(
-                height: size.height * 0.5, // Tinggi tetap untuk list
+                height: size.height * 0.5, 
                 child: StationListWidget(showSearch: false),
               ),
             ],
@@ -143,7 +138,6 @@ class HomeView extends StatelessWidget {
   }
 }
 
-// Widget wrapper untuk StationOverviewGrid jika perlu disesuaikan untuk responsivitas
 extension StationOverviewGridExt on StationOverviewGrid {
   Widget withResponsiveHeight(double height) {
     return SizedBox(height: height, child: this);

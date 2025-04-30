@@ -7,6 +7,5 @@ abstract class AppRoute {
   static const String logout = '/logout';
   static const String navbar = '/navbar';
 
-  // Fungsi bantu untuk generate route lengkap dengan parameter
   static String stationDetailWithId(String id) => '/station/detail/$id';
 }

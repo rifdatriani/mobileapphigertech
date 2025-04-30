@@ -14,17 +14,16 @@ class MainNavbar extends StatelessWidget {
   MainNavbar({super.key});
   final NavbarController controller = Get.put(NavbarController());
 
-  // AppBar reusable
   PreferredSizeWidget buildAppBar(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      toolbarHeight: size.height * 0.07, // Ukuran AppBar responsif
+      toolbarHeight: size.height * 0.07, 
       title: Image.asset(
         'assets/higertech.png',
-        height: size.height * 0.04, // Logo responsif
+        height: size.height * 0.04, 
         fit: BoxFit.contain,
       ),
       centerTitle: false,
@@ -33,14 +32,13 @@ class MainNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Registrasi controller & repository untuk Settings
     if (!Get.isRegistered<SettingsController>()) {
       Get.put(SettingsRepository());
       Get.put(SettingsController(Get.find()));
     }
 
     final List<Widget> pages = [
-      HomeView(), // Sudah memiliki AppBar sendiri
+      HomeView(), 
       Scaffold(
         appBar: buildAppBar(context),
         body: const Padding(

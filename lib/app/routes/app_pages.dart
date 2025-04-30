@@ -8,11 +8,9 @@ import 'package:mobileapphigertech/app/modules/screens/login/view/login_view.dar
 import 'package:mobileapphigertech/app/modules/home/binding/home_binding.dart';
 import 'package:mobileapphigertech/app/modules/settings/binding/settings_binding.dart';
 import 'package:mobileapphigertech/app/modules/settings/view/settings_view.dart';
-// import 'package:mobileapphigertech/app/modules/home/view/home_view.dart';
 import 'package:mobileapphigertech/app/modules/station/binding/station_binding.dart';
 import 'package:mobileapphigertech/app/modules/station/view/station_view.dart';
 import 'package:mobileapphigertech/app/modules/navbar/view/main_navbar.dart';
-// import 'package:mobileapphigertech/app/modules/map/binding/map_binding.dart';
 import 'package:mobileapphigertech/app/routes/app_route.dart';
 
 class AppPage {
@@ -33,13 +31,7 @@ class AppPage {
       transition: Transition.fadeIn,
     ),
 
-    // Home Screen (bisa digunakan secara langsung tapi sebaiknya lewat navbar)
-    // GetPage(
-    //   name: AppRoute.home,
-    //   page: () => HomeView(),
-    //   binding: HomeBinding(),
-    //   transition: Transition.rightToLeft,
-    // ),
+    // Home Screen 
     GetPage(
       name: AppRoute.home,
       page: () => MainNavbar(),
@@ -47,7 +39,7 @@ class AppPage {
       transition: Transition.fadeIn,
     ),
 
-    // Station List
+    //Station List
     GetPage(
       name: AppRoute.stations,
       page: () => StationView(),
@@ -55,15 +47,6 @@ class AppPage {
       transition: Transition.rightToLeft,
     ),
 
-    // Map View
-    // GetPage(
-    //   name: AppRoute.map,
-    //   page: () => MapView(),
-    //   binding: MapBinding(),
-    //   transition: Transition.rightToLeft,
-    // ),
-
-    // Logout View (sebagai pengaturan juga bisa)
     GetPage(
       name: AppRoute.logout,
       page: () => const LogoutView(),

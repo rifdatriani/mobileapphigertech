@@ -39,7 +39,7 @@ class _StationListWidgetState extends State<StationListWidget> {
           return const Center(child: Text('No stations found'));
         }
 
-        // Filter data berdasarkan pencarian
+  
         final filteredStations =
             ctrl.stations.where((station) {
               if (!widget.showSearch) return true;
@@ -49,7 +49,6 @@ class _StationListWidgetState extends State<StationListWidget> {
                   false;
             }).toList();
 
-        // Group by balai
         final groupedStations = groupBy(
           filteredStations,
           (station) => station.balaiName ?? 'Unknown',
@@ -82,7 +81,7 @@ class _StationListWidgetState extends State<StationListWidget> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Search bar hanya muncul jika showSearch = true
+
                   if (widget.showSearch) ...[
                     TextField(
                       controller: _searchController,

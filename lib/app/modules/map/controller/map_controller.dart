@@ -15,7 +15,6 @@ class MapController {
   Set<Marker> get markers => _markers;
 
   Future<void> initialize() async {
-    // Load ikon terlebih dahulu
     final iconAWLR = await MarkerIconLoader.loadSimple('assets/duga.png');
     final iconARR = await MarkerIconLoader.loadSimple('assets/awan.png');
 

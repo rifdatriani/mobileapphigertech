@@ -12,7 +12,6 @@ class SettingsView extends GetView<SettingsController> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        // Mode Gelap
         ListTile(
           leading: const Icon(Icons.brightness_6),
           title: const Text("Mode Gelap"),
@@ -25,7 +24,6 @@ class SettingsView extends GetView<SettingsController> {
         const Divider(),
         const SizedBox(height: 500),
 
-        // Tombol Logout berbentuk Card Button
         Card(
           margin: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(

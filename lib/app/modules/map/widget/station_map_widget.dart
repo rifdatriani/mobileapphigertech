@@ -68,7 +68,6 @@ class _StationMapWidgetState extends State<StationMapWidget> {
           ),
         ),
 
-        // Segitiga ke bawah
         Transform.translate(
           offset: const Offset(20, 0),
           child: CustomPaint(
@@ -118,7 +117,6 @@ class _StationMapWidgetState extends State<StationMapWidget> {
       children: [
         mapWidget,
 
-        // Tombol info (pojok kiri bawah)
         Positioned(
           left: 16,
           bottom: 16,
@@ -146,7 +144,6 @@ class _StationMapWidgetState extends State<StationMapWidget> {
           ),
         ),
 
-        // Legend card (pojok kiri bawah agak naik)
         Positioned(
           left: 16,
           bottom: 80,
@@ -173,7 +170,6 @@ class _StationMapWidgetState extends State<StationMapWidget> {
   }
 }
 
-// Custom painter untuk segitiga mengarah ke bawah
 class _DownTrianglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -187,7 +183,6 @@ class _DownTrianglePainter extends CustomPainter {
 
     canvas.drawPath(path, paint);
 
-    // Garis tepi segitiga
     final borderPaint = Paint()
       ..color = Colors.grey.shade300
       ..style = PaintingStyle.stroke

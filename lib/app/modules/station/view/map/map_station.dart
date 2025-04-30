@@ -41,7 +41,7 @@ class _StationMapState extends State<StationMap> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: GoogleMap(
-        mapType: MapType.hybrid, // Tambahkan ini
+        mapType: MapType.hybrid,
         initialCameraPosition: CameraPosition(
           target: _targetPosition ?? const LatLng(-2.5489, 118.0149),
           zoom: 4,

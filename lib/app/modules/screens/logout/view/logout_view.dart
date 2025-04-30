@@ -22,7 +22,7 @@ class LogoutView extends StatelessWidget {
         TextButton(onPressed: () => Get.back(), child: const Text("Batal")),
         TextButton(
           onPressed: () {
-            controller.logout(); // Logout user
+            controller.logout(); 
           },
           child: const Text("Keluar", style: TextStyle(color: Colors.red)),
         ),

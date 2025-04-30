@@ -7,16 +7,11 @@ class SettingsController extends GetxController {
 
   SettingsController(this.repository);
 
-  // Contoh state
   var isDarkMode = false.obs;
-
   void toggleDarkMode() {
     isDarkMode.value = !isDarkMode.value;
     Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
-    // Simpan ke SharedPreferences kalau mau
   }
-
   void logout() {
-    // Tambahkan logika logout jika perlu
   }
 }

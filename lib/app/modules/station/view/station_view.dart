@@ -15,19 +15,23 @@ class StationView extends GetView<StationController> {
 
   @override
   Widget build(BuildContext context) {
+        final size = MediaQuery.of(context).size;
     final args = Get.arguments as Map<String, dynamic>?;
 
     final String balai = args?['balaiName'] ?? 'Station';
     final double latitude = args?['lat'] ?? -2.5489;
     final double longitude = args?['lng'] ?? 118.0149;
 
-    final List<dynamic> tabs = controller.stationTypes;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Image.asset('assets/higertech.png', height: 50),
+        toolbarHeight: size.height * 0.07,
+        title: Image.asset(
+          'assets/higertech.png',
+          height: size.height * 0.04, 
+          fit: BoxFit.contain,
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -144,13 +148,13 @@ class StationView extends GetView<StationController> {
                             
                             switch (station.stationType) {
                               case 'AWLR':
-                                return CurahHujanCard(station: station);
+                                return DugaAirCard(station: station);
                               case 'PCH':
                                 return CurahHujanCard(station: station);
                               case 'PDA':
                                 return DugaAirCard(station: station);
                               case 'ARR':
-                                return DugaAirCard(station: station);
+                                return CurahHujanCard(station: station);
                               case 'AWS':
                                 return KlimatologiCard(station: station);
                               case 'AWLR_ARR':

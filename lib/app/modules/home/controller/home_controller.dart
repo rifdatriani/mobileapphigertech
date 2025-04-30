@@ -17,7 +17,6 @@ class HomeController extends GetxController with StateMixin<dynamic> {
   List<Marker> markers = [];
   String? filteredType;
 
-  // Simpan icon agar tidak load berulang
   late BitmapDescriptor iconAWLR;
   late BitmapDescriptor iconARR;
   late BitmapDescriptor iconAWS;
@@ -30,7 +29,6 @@ class HomeController extends GetxController with StateMixin<dynamic> {
   }
 
   Future<void> initialize() async {
-    // Load semua ikon hanya sekali
     iconAWLR = await BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(size: Size(12, 12)),
       'assets/duga.png',

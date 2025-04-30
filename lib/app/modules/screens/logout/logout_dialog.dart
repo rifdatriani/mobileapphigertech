@@ -14,12 +14,12 @@ class LogoutDialog {
             actions: [
               TextButton(
                 onPressed:
-                    () => Get.back(), // Gunakan GetX untuk menutup dialog
+                    () => Get.back(), 
                 child: const Text("Batal"),
               ),
               TextButton(
                 onPressed: () async {
-                  Get.back(); // Tutup dialog dulu
+                  Get.back(); 
                   await _logout();
                 },
                 child: const Text("Logout"),
@@ -30,11 +30,9 @@ class LogoutDialog {
   }
 
   static Future<void> _logout() async {
-    // Hapus sesi pengguna dari SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
 
-    // Pindah ke halaman login dan hapus semua halaman sebelumnya
     Get.offAll(() => LoginView());
   }
 }

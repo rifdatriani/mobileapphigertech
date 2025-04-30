@@ -7,9 +7,7 @@ import 'package:mobileapphigertech/app/routes/app_route.dart';
 import 'package:mobileapphigertech/app/modules/settings/controller/settings_controller.dart';
 
 void main() {
-  // Registrasi Repository dulu
   Get.put(SettingsRepository());
-  // Baru inject controller dengan repository sebagai parameter
   Get.put(SettingsController(Get.find<SettingsRepository>()));
 
   runApp(const MyApp());

@@ -26,7 +26,7 @@ class LoginController extends GetxController {
       Future.delayed(Duration(seconds: 1), () {
         Get.offNamed(
           AppRoute.home,
-        ); // Navigasi ke halaman home setelah login sukses
+        ); 
       });
     } else {
       Get.snackbar(

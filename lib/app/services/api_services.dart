@@ -47,7 +47,7 @@ class ApiService extends GetConnect {
 
   ApiResponse _handleResponse(Response response) {
     try {
-      // Coba decode dari bodyString manual (karena body = null)
+
       final parsed = json.decode(response.bodyString!);
 
       return ApiResponse(

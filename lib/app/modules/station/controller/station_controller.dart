@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_notifier.dart';
 import 'package:mobileapphigertech/app/modules/station/model/station_model.dart';
 import 'package:mobileapphigertech/app/modules/station/repository/station_repository.dart';
 
